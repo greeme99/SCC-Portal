@@ -18,9 +18,20 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+const THEME_SCRIPT = `
+  try {
+    var saved = localStorage.getItem('scd.theme');
+    var isDark = saved === 'dark' || ((saved === 'system' || !saved) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+  } catch (e) {}
+`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="ko" data-theme="light">
+    <html lang="ko" data-theme="light" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body className="font-sans antialiased">
         <AppShell>{children}</AppShell>
       </body>

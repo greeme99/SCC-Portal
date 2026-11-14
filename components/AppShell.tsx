@@ -3,9 +3,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { Bell, Menu, Search } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { Sidebar, SidebarFallback } from './Sidebar';
+import { ThemeToggle } from './ThemeToggle';
+
+function pageTitleFromPath(pathname: string): string {
+  if (pathname === '/dashboard' || pathname.startsWith('/dashboard/')) return '대시보드';
+  if (pathname === '/program/overview') return '프로그램 개요';
+  if (pathname.startsWith('/coaching/')) return '코칭 가이드';
+  if (pathname === '/records/journal') return '코칭일지';
+  if (pathname === '/records/final-report') return '종료 리포트';
+  if (pathname === '/records/coach-reflection') return '코치 종료소감';
+  if (pathname === '/records/client-reflection') return '피코치 종료소감';
+  if (pathname === '/tools') return '코칭 툴 나눔터';
+  if (pathname.startsWith('/references')) return '참조 자료실';
+  return '삼코동 코칭 포털';
+}
 
 type SidebarState = 'auto' | 'open' | 'closed';
 const STORAGE_KEY = 'scd.sidebar';
@@ -112,29 +126,59 @@ export function AppShell({ children }: { children: ReactNode }) {
         본문 바로가기
       </a>
 
-      <header className="app-topbar">
-        <button
-          ref={menuButtonRef}
-          type="button"
-          onClick={() => setOpen(!visible())}
-          aria-controls="sidebar"
-          aria-expanded={sidebarVisible}
-          aria-label="메뉴 열기/닫기"
-          className="grid size-11 shrink-0 place-items-center rounded-md border border-line bg-surface text-body transition hover:bg-subtle active:scale-[0.97]"
-        >
-          <Menu size={22} strokeWidth={1.75} aria-hidden />
-        </button>
-        <Link href="/" className="flex min-w-0 items-center gap-2" onClick={onNavigate}>
-          <Image
-            src="/brand/samkodong-logo-original.svg"
-            alt="삼코동 Samsung Coaching Club"
-            width={114}
-            height={40}
-            priority
-            className="h-10 w-auto shrink-0"
-          />
-          <span className="truncate text-h3 text-main">삼코동 코칭 포털</span>
-        </Link>
+      <header className="app-topbar justify-between">
+        <div className="flex min-w-0 items-center gap-3">
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={() => setOpen(!visible())}
+            aria-controls="sidebar"
+            aria-expanded={sidebarVisible}
+            aria-label="메뉴 열기/닫기"
+            className="grid size-10 shrink-0 place-items-center rounded-lg border border-line bg-surface text-body transition hover:bg-subtle active:scale-[0.97]"
+          >
+            <Menu size={20} strokeWidth={1.75} aria-hidden />
+          </button>
+          <Link href="/" className="flex shrink-0 items-center gap-2" onClick={onNavigate}>
+            <Image
+              src="/brand/samkodong-logo-original.svg"
+              alt="삼코동 Samsung Coaching Club"
+              width={114}
+              height={40}
+              priority
+              className="h-9 w-auto shrink-0"
+            />
+          </Link>
+          <span className="hidden h-5 w-px bg-line sm:block" aria-hidden />
+          <span className="hidden truncate text-body font-bold text-main sm:block">
+            {pageTitleFromPath(pathname)}
+          </span>
+          <span className="hidden items-center gap-1.5 rounded-full border border-line bg-subtle px-2.5 py-0.5 text-[0.75rem] font-bold text-primary md:inline-flex">
+            <span className="size-1.5 rounded-full bg-primary animate-pulse" aria-hidden />
+            SYSTEM LIVE
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="relative hidden lg:block">
+            <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted" aria-hidden />
+            <input
+              type="search"
+              placeholder="Search resources..."
+              className="h-9 w-48 rounded-lg border border-line bg-subtle pl-9 pr-3 text-caption text-main transition placeholder:text-muted focus:bg-surface focus:outline-none"
+              aria-label="통합 검색"
+            />
+          </div>
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label="알림"
+            title="새 알림 없음"
+            className="grid size-9 shrink-0 place-items-center rounded-lg border border-line bg-surface text-body transition hover:bg-subtle"
+          >
+            <Bell size={17} strokeWidth={1.75} aria-hidden />
+          </button>
+        </div>
       </header>
 
       <nav

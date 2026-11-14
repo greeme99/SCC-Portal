@@ -49,9 +49,15 @@ function initialOpen(type: CoachingType | null): Set<CoachingType> {
   return new Set(type ? [type] : []);
 }
 
-function GroupTitle({ children }: { children: string }) {
+function GroupTitle({ children, isFirst }: { children: string; isFirst?: boolean }) {
   return (
-    <h2 className="mt-6 mb-2 border-b border-line px-2 pb-2 text-caption font-semibold text-body">{children}</h2>
+    <h2
+      className={`${
+        isFirst ? 'mt-3' : 'mt-5'
+      } mb-2 flex items-center rounded-md border border-line bg-subtle px-3 py-1.5 text-caption font-bold tracking-wider text-main shadow-xs`}
+    >
+      {children}
+    </h2>
   );
 }
 
@@ -74,9 +80,9 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
 
   return (
     <>
-      {NAV_GROUPS.map((group) => (
+      {NAV_GROUPS.map((group, idx) => (
         <div key={group.title}>
-          <GroupTitle>{group.title}</GroupTitle>
+          <GroupTitle isFirst={idx === 0}>{group.title}</GroupTitle>
           {group.kind === 'links' ? (
             <ul>
               {group.links.map((link) => {
