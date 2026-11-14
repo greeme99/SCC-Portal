@@ -88,33 +88,6 @@ export default async function StagePage({ params }: { params: Promise<Params> })
         </Card>
       )}
 
-      {tools.length > 0 && (
-        <Card title="이 회기 추천 도구" source="가이드북 27.15">
-          <ul>
-            {tools.map((tool) => (
-              <li key={tool.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3 last:border-b-0">
-                <span className="min-w-0">
-                  <span className={`mr-2 inline-block rounded-full px-2.5 py-0.5 text-caption ${tool.level === 'primary' ? 'bg-primary-light text-primary-strong' : 'bg-subtle text-body'}`}>
-                    {tool.level === 'primary' ? '우선' : '보조'}
-                  </span>
-                  <span className="font-semibold text-main">{tool.name}</span>
-                  <span className="text-body"> — {tool.purpose}</span>
-                </span>
-                <a
-                  href={tool.hubUrl || TOOL_HUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center gap-1 rounded-full border border-line bg-surface px-4 font-semibold text-main hover:bg-subtle"
-                >
-                  나눔터 <ExternalLink size={16} aria-hidden />
-                  <span className="sr-only">(새 창)</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-
       {common.sheet && (
         <Card title={common.sheet.title} source={common.source}>
           <KeyValueTable rows={common.sheet.rows} />
@@ -144,6 +117,33 @@ export default async function StagePage({ params }: { params: Promise<Params> })
           </div>
         </details>
       </Card>
+
+      {tools.length > 0 && (
+        <Card title="이 회기 추천 도구" source="가이드북 27.15">
+          <ul>
+            {tools.map((tool) => (
+              <li key={tool.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3 last:border-b-0">
+                <span className="min-w-0">
+                  <span className={`mr-2 inline-block rounded-full px-2.5 py-0.5 text-caption ${tool.level === 'primary' ? 'bg-primary-light text-primary-strong' : 'bg-subtle text-body'}`}>
+                    {tool.level === 'primary' ? '우선' : '보조'}
+                  </span>
+                  <span className="font-semibold text-main">{tool.name}</span>
+                  <span className="text-body"> — {tool.purpose}</span>
+                </span>
+                <a
+                  href={tool.hubUrl || TOOL_HUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center gap-1 rounded-full border border-line bg-surface px-4 font-semibold text-main hover:bg-subtle"
+                >
+                  나눔터 <ExternalLink size={16} aria-hidden />
+                  <span className="sr-only">(새 창)</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </Card>
+      )}
 
       <nav aria-label="회차 이동" className="mt-2 flex justify-between gap-4 font-semibold text-primary">
         {prev ? <Link href={`/coaching/${type}/${prev}`}>← {stageTitle(prev)}</Link> : <span />}

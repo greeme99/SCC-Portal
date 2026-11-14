@@ -45,6 +45,8 @@
 
   --shadow-card: var(--shadow-card);
   --shadow-hover: var(--shadow-hover);
+  --shadow-glass: var(--shadow-glass);
+  --shadow-glass-hover: var(--shadow-glass-hover);
 }
 
 html {
@@ -142,4 +144,32 @@ body {
     padding-left: 16px;
     padding-right: 16px;
   }
+}
+
+/* 3D 글래스모피즘 스펙 카드 (Glassmorphism + 3D Isometric) */
+.glass-spec-card {
+  position: relative;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border-subtle);
+  border-top-color: var(--glass-border);
+  box-shadow: var(--shadow-glass);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+}
+
+.glass-spec-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  pointer-events: none;
+}
+
+.glass-spec-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glass-hover);
+  border-color: var(--color-primary-light);
+  border-top-color: var(--glass-border);
 }

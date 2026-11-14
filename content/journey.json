@@ -3,7 +3,7 @@
   "steps": [
     {
       "stage": "start",
-      "label": "시작 세션",
+      "label": "프리 세션",
       "question": "“이 과정에서 무엇을 얻고 싶은가?”",
       "outputs": "참여 합의서, 사전성찰지"
     },

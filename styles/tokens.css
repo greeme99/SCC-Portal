@@ -27,6 +27,32 @@
 
   /* 삼코동 로고의 노란 별 색 — 입장 화면 그림의 '북극성'에만 쓴다 (DEC-031) */
   --color-brand-star: #f8b62d;
+
+  /* 글래스모피즘 및 3D 아이소메트릭 토큰 */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.95);
+  --glass-border-subtle: rgba(226, 232, 240, 0.8);
+  --shadow-glass: 0 10px 25px -4px rgba(15, 23, 42, 0.06), 0 4px 10px -2px rgba(15, 23, 42, 0.03), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  --shadow-glass-hover: 0 20px 32px -8px rgba(15, 23, 42, 0.12), 0 8px 16px -4px rgba(0, 102, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 1);
+
+  --icon-3d-base: #e0edff;
+  --icon-3d-surface: #ffffff;
+  --icon-3d-shadow: rgba(15, 23, 42, 0.12);
+  --icon-3d-highlight: rgba(255, 255, 255, 0.85);
+  --icon-3d-accent: #0066ff;
+  --icon-3d-accent-light: #38bdf8;
+  --icon-3d-warm: #f59e0b;
+  --icon-3d-warm-light: #fef3c7;
+  --icon-3d-green: #10b981;
+  --icon-3d-purple: #8b5cf6;
+
+  /* 3D 클레이 스텝 & 배지 토큰 (Claymorphism) */
+  --clay-bg: #ffffff;
+  --clay-bg-subtle: #f8fafc;
+  --clay-shadow-outer: 0 10px 20px -3px rgba(15, 23, 42, 0.1), 0 4px 8px -2px rgba(15, 23, 42, 0.05);
+  --clay-shadow-hover: 0 18px 28px -5px rgba(15, 23, 42, 0.16), 0 6px 12px -2px rgba(0, 102, 255, 0.15);
+  --clay-shadow-inner: inset 0 2px 3px rgba(255, 255, 255, 0.95), inset 0 -3px 5px rgba(15, 23, 42, 0.07);
+  --clay-medal-shadow: 0 6px 12px -2px rgba(0, 102, 255, 0.35), inset 0 2px 3px rgba(255, 255, 255, 0.6), inset 0 -2px 4px rgba(0, 82, 204, 0.45);
 }
 
 /* 다크 토큰은 정의만 한다. 전환 UI는 2차 범위 (FR-013) */
@@ -54,4 +80,30 @@
   --color-text-on-primary: #ffffff;
 
   --color-brand-star: #f8b62d;
+
+  /* 글래스모피즘 및 3D 아이소메트릭 토큰 (다크) */
+  --glass-bg: rgba(30, 41, 59, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-border-subtle: rgba(71, 85, 105, 0.5);
+  --shadow-glass: 0 10px 25px -4px rgba(0, 0, 0, 0.45), 0 4px 10px -2px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  --shadow-glass-hover: 0 20px 32px -8px rgba(0, 0, 0, 0.65), 0 8px 16px -4px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+  --icon-3d-base: rgba(99, 102, 241, 0.25);
+  --icon-3d-surface: #1e293b;
+  --icon-3d-shadow: rgba(0, 0, 0, 0.45);
+  --icon-3d-highlight: rgba(255, 255, 255, 0.15);
+  --icon-3d-accent: #818cf8;
+  --icon-3d-accent-light: #38bdf8;
+  --icon-3d-warm: #fbbf24;
+  --icon-3d-warm-light: rgba(245, 158, 11, 0.2);
+  --icon-3d-green: #34d399;
+  --icon-3d-purple: #a78bfa;
+
+  /* 3D 클레이 스텝 & 배지 토큰 (다크) */
+  --clay-bg: #1e293b;
+  --clay-bg-subtle: #334155;
+  --clay-shadow-outer: 0 10px 20px -3px rgba(0, 0, 0, 0.5), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+  --clay-shadow-hover: 0 18px 28px -5px rgba(0, 0, 0, 0.7), 0 6px 12px -2px rgba(99, 102, 241, 0.3);
+  --clay-shadow-inner: inset 0 2px 3px rgba(255, 255, 255, 0.15), inset 0 -3px 5px rgba(0, 0, 0, 0.4);
+  --clay-medal-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.5), inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -2px 4px rgba(0, 0, 0, 0.5);
 }

@@ -3,6 +3,7 @@ import { PageHeader } from '@/components/PageHeader';
 import { Card, QuestionList } from '@/components/GuideBlocks';
 import { Disclosure } from '@/components/Disclosure';
 import { WorkflowDiagram, type FlowNode } from '@/components/WorkflowDiagram';
+import { Spec3DIcon } from '@/components/Spec3DIcons';
 import { BETWEEN_PRINCIPLES, COACH_WORKFLOW, JOURNEY, OVERVIEW } from '@/lib/content';
 
 export const metadata: Metadata = { title: '프로그램 개요' };
@@ -37,28 +38,37 @@ export default function OverviewPage() {
       <Card title="코칭 프로그램이란" source={definition.source}>
         <p className="break-keep text-lg leading-relaxed text-main">{definition.text}</p>
 
-        {/* 운영 기본 사양: 표 대신 항목별 카드 — 권장 기준을 크게, 운영 유의점은 작게 */}
-        <div className="mt-6 flex items-baseline justify-between gap-2">
-          <h3 className="text-h3 text-main">운영 기본 사양</h3>
+        {/* 운영 사양 3D 아이소메트릭 & 유리 질감 카드 (Glassmorphism + 3D Icons) */}
+        <div className="mt-6 flex items-baseline justify-end gap-2">
           <span className="text-caption text-body">{specs.source}</span>
         </div>
-        <dl className="mt-3 grid grid-cols-2 gap-3 xl:grid-cols-4">
+        <dl className="mt-3 grid grid-cols-1 gap-3.5 sm:grid-cols-2 xl:grid-cols-4">
           {specs.rows.map(([item, standard, note]) => (
-            <div key={item} className="rounded-md bg-subtle p-3 sm:p-4">
-              <dt className="text-caption font-semibold text-body">{item}</dt>
-              <dd className="mt-1 break-keep font-semibold text-main">{standard}</dd>
-              <dd className="mt-1 break-keep text-caption text-body">{note}</dd>
+            <div
+              key={item}
+              className="glass-spec-card flex flex-col justify-between rounded-2xl p-4.5 sm:p-5"
+            >
+              <div>
+                <div className="flex items-start justify-between gap-2">
+                  <dt className="text-[0.975rem] font-bold tracking-tight text-primary">{item}</dt>
+                  <div className="transition-transform duration-200 group-hover:scale-105">
+                    <Spec3DIcon item={item} size={42} />
+                  </div>
+                </div>
+                <dd className="mt-2.5 break-keep text-[0.908rem] font-bold text-main leading-snug">{standard}</dd>
+              </div>
+              <dd className="mt-3.5 break-keep border-t border-line/60 pt-2.5 text-caption text-muted">{note}</dd>
             </div>
           ))}
         </dl>
       </Card>
 
-      <Card title="그림 1. 코칭 여정" source={JOURNEY.source}>
-        <WorkflowDiagram id="journey" title="코칭 여정" nodes={journeyNodes} linkLabel="가이드 열기" />
+      <Card title="1. 코칭 여정" source={JOURNEY.source}>
+        <WorkflowDiagram id="journey" title="코칭 여정" nodes={journeyNodes} nodeWidth={124} gap={30} />
       </Card>
 
-      <Card title="그림 2. 코치 업무 절차">
-        <WorkflowDiagram id="coach-workflow" title="코치 업무 절차" nodes={workflowNodes} numbered linkLabel="바로 가기" />
+      <Card title="2. 코치 업무 절차">
+        <WorkflowDiagram id="coach-workflow" title="코치 업무 절차" nodes={workflowNodes} perRow={7} nodeWidth={116} gap={24} />
       </Card>
 
       {/* 가이드북 원문은 모두 남기되 접어 둔다 — 필요한 묶음만 펼쳐 읽는다 */}
