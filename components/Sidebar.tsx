@@ -62,27 +62,32 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
   // 최상단 전체 열림/닫힘 판단
   const isAnyOpen = openGroups.size > 0 || openTypes.size > 0;
 
-  // 최상단: 전체 카테고리 하위메뉴를 한 번에 닫거나(카테고리명만 표시) 전체 열기
+  // 최상단: 전체 카테고리 하위메뉴를 한 번에 닫거나(카테고리명만 표시) 1단계 서브메뉴만 열기
   const toggleAll = () => {
     if (isAnyOpen) {
       setOpenGroups(new Set());
       setOpenTypes(new Set());
     } else {
       setOpenGroups(new Set(ALL_GROUP_TITLES));
-      setOpenTypes(new Set(COACHING_TYPES));
+      setOpenTypes(new Set());
     }
   };
 
-  // 카테고리 레벨 토글
+  // 카테고리 레벨 토글: 열릴 때는 하위 sub 메뉴만 열리고, 닫힐 때는 하위 세부메뉴까지 모두 닫힘
   const toggleGroup = (title: string) => {
     setOpenGroups((prev) => {
       const next = new Set(prev);
       if (next.has(title)) {
         next.delete(title);
+        // 상위 카테고리가 닫히면 하위 서브메뉴도 모두 닫힘
+        if (title === '코칭 모델') {
+          setOpenTypes(new Set());
+        }
       } else {
         next.add(title);
+        // 열릴 때는 하위 1단계 sub 메뉴(커리어/멘토링/라이프 코칭)만 열린 상태로 시작
         if (title === '코칭 모델') {
-          setOpenTypes(new Set(COACHING_TYPES));
+          setOpenTypes(new Set());
         }
       }
       return next;
