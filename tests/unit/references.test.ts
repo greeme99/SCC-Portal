@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { fileKind, searchReferences, toReferences } from '@/lib/data/references';
+import { fileKind, getFallbackReferences, searchReferences, toReferences } from '@/lib/data/references';
 import { parseInline, parseMarkdown } from '@/lib/markdown';
 import { isActiveLink } from '@/lib/navigation';
 
@@ -13,7 +13,14 @@ describe('참조 자료실 목록 (FN-009)', () => {
     expect(files[0]).toEqual({ id: 'a', name: '운영 안내서.pdf', kind: 'PDF', modifiedDate: '2026-10-01', url: 'https://drive.google.com/a' });
     expect(files[1].kind).toBe('구글 슬라이드');
     expect(fileKind('image/png')).toBe('이미지');
+    expect(fileKind('text/html')).toBe('HTML');
     expect(fileKind('application/zip')).toBe('파일');
+  });
+  it('공유 구글 드라이브 폴더의 실제 자료 fallback 목록을 제공한다', () => {
+    const fallback = getFallbackReferences();
+    expect(fallback.length).toBeGreaterThanOrEqual(7);
+    expect(fallback.some((f) => f.name.includes('KCA코칭역량모델_해설집'))).toBe(true);
+    expect(fallback.some((f) => f.name.includes('KPC_스크립트'))).toBe(true);
   });
   it('이름 검색은 대소문자·띄어쓰기와 무관하고 모든 단어를 포함해야 한다', () => {
     expect(searchReferences(files, '안내서').map((f) => f.id)).toEqual(['a']);

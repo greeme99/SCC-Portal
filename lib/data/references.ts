@@ -18,7 +18,68 @@ const KIND_BY_MIME: Record<string, string> = {
   'application/vnd.ms-powerpoint': 'PPT',
   'application/vnd.openxmlformats-officedocument.presentationml.presentation': 'PPT',
   'text/plain': '텍스트',
+  'text/html': 'HTML',
 };
+
+export const DEFAULT_REFERENCES_FOLDER_ID = '1YfRW1ytkDiQ5KEC_E_vRi6PmedEyfQd2';
+export const DEFAULT_REFERENCES_FOLDER_URL = 'https://drive.google.com/drive/folders/1YfRW1ytkDiQ5KEC_E_vRi6PmedEyfQd2?usp=sharing';
+
+// 구글 드라이브 지정 폴더(1YfRW1ytkDiQ5KEC_E_vRi6PmedEyfQd2) 실제 보유 자료 스냅샷
+export const FALLBACK_REFERENCES: ReferenceFile[] = [
+  {
+    id: '1mt1wbYX97SduRK42zdD8I-jnHWFH1FGC',
+    name: 'KCA코칭역량모델_해설집_V10.pdf',
+    kind: 'PDF',
+    modifiedDate: '2026-07-25',
+    url: 'https://drive.google.com/file/d/1mt1wbYX97SduRK42zdD8I-jnHWFH1FGC/view?usp=sharing',
+  },
+  {
+    id: '1TbAeU0cS6Q9SQpjfY7zigaXjAFMxSvbB',
+    name: 'KPC_스크립트_v1.0_261101.xlsx',
+    kind: 'Excel',
+    modifiedDate: '2026-11-01',
+    url: 'https://drive.google.com/file/d/1TbAeU0cS6Q9SQpjfY7zigaXjAFMxSvbB/view?usp=sharing',
+  },
+  {
+    id: '1-Je4CIpZ-t3mPMQ58Q0UCaCN6RiOULR8',
+    name: 'KPC_응시서류_점검_v1.0_2026.11.02.html',
+    kind: 'HTML',
+    modifiedDate: '2026-11-02',
+    url: 'https://drive.google.com/file/d/1-Je4CIpZ-t3mPMQ58Q0UCaCN6RiOULR8/view?usp=sharing',
+  },
+  {
+    id: '1QxywAdcaL3y6i9QDhdJlsz1sMJdxmLZa',
+    name: 'KAC_응시서류_점검_v1.0_2026.11.02.html',
+    kind: 'HTML',
+    modifiedDate: '2026-11-02',
+    url: 'https://drive.google.com/file/d/1QxywAdcaL3y6i9QDhdJlsz1sMJdxmLZa/view?usp=sharing',
+  },
+  {
+    id: '11AtXtmvhd778_DcquLJLwCkF_BD8ftF-',
+    name: 'KCA코칭역량모델_20220520_게시용.pdf',
+    kind: 'PDF',
+    modifiedDate: '2026-05-20',
+    url: 'https://drive.google.com/file/d/11AtXtmvhd778_DcquLJLwCkF_BD8ftF-/view?usp=sharing',
+  },
+  {
+    id: '17ulHEZ_rXnoqAcPmkRoa98A_3GPEe1E-',
+    name: '초록우산-코칭GPS13.pdf',
+    kind: 'PDF',
+    modifiedDate: '2026-10-15',
+    url: 'https://drive.google.com/file/d/17ulHEZ_rXnoqAcPmkRoa98A_3GPEe1E-/view?usp=sharing',
+  },
+  {
+    id: '17qsUppnsD2ooibtjPcqvmBMDUZlS16US',
+    name: '서울대_대학원생_커리어코칭_Dream_Milestone_Full_Guide.docx',
+    kind: 'Word',
+    modifiedDate: '2026-10-20',
+    url: 'https://drive.google.com/file/d/17qsUppnsD2ooibtjPcqvmBMDUZlS16US/view?usp=sharing',
+  },
+];
+
+export function getFallbackReferences(): ReferenceFile[] {
+  return [...FALLBACK_REFERENCES];
+}
 
 export function fileKind(mimeType: string): string {
   if (KIND_BY_MIME[mimeType]) return KIND_BY_MIME[mimeType];

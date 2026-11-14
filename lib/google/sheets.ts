@@ -64,13 +64,90 @@ export async function readSheet(spreadsheetId: string, range: string): Promise<s
 
 export type DriveFile = { id: string; name: string; mimeType: string; modifiedTime: string; webViewLink: string };
 
-// 폴더 바로 아래 파일 목록 (하위 폴더·휴지통 제외). 파일 내용은 읽지 않는다
-export async function listFolder(folderId: string): Promise<DriveFile[]> {
-  const params = new URLSearchParams({
-    q: `'${folderId.replace(/'/g, "\\'")}' in parents and trashed = false and mimeType != 'application/vnd.google-apps.folder'`,
-    fields: 'files(id,name,mimeType,modifiedTime,webViewLink)',
-    orderBy: 'name',
-    pageSize: '200',
+// 공개 공유 폴더(링크가 있는 사용자에게 공개된 구글 드라이브 폴더)에서 파일 목록 추출
+export async function listPublicFolder(folderId: string): Promise<DriveFile[]> {
+  const url = `https://drive.google.com/drive/folders/${encodeURIComponent(folderId)}?usp=sharing`;
+  const res = await fetch(url, {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+      'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
+    },
+    cache: 'no-store',
   });
-  return (await googleGet<{ files?: DriveFile[] }>(`https://www.googleapis.com/drive/v3/files?${params}`)).files ?? [];
+  if (!res.ok) throw new Error(`공개 폴더 조회 실패 (${res.status})`);
+  const html = await res.text();
+
+  const files: DriveFile[] = [];
+  const seen = new Set<string>();
+
+  // 패턴 1: [[null,"ID"] ... "MIME" ... [[["FILENAME",null,1]]]
+  const pattern = /\[\[null,"([a-zA-Z0-9_-]{25,})"\](?:,[^,[\]]*){3,4},"([a-zA-Z0-9_./-]+)"[^]*?\[\[\["([^"]+)",null,1\]\]\]/g;
+  let m: RegExpExecArray | null;
+  while ((m = pattern.exec(html)) !== null) {
+    const [, id, mimeType, name] = m;
+    if (!seen.has(id)) {
+      seen.add(id);
+      files.push({
+        id,
+        name,
+        mimeType,
+        modifiedTime: new Date().toISOString(),
+        webViewLink: `https://drive.google.com/file/d/${id}/view?usp=sharing`,
+      });
+    }
+  }
+
+  // 패턴 2: aria-label 및 ssk 패턴 (보조 추출)
+  if (files.length === 0) {
+    const ariaRegex = /aria-label="([^"]+?)(?:\s+(?:Microsoft [A-Za-z]+|PDF|HTML|Text|Shared))*\s+Shared"[^>]*?ssk='[^']*?:([a-zA-Z0-9_-]{25,})-/g;
+    while ((m = ariaRegex.exec(html)) !== null) {
+      const [, name, rawId] = m;
+      const id = rawId.replace(/-\d+$/, '');
+      if (!seen.has(id)) {
+        seen.add(id);
+        const ext = name.split('.').pop()?.toLowerCase();
+        const mimeType =
+          ext === 'pdf'
+            ? 'application/pdf'
+            : ext === 'xlsx' || ext === 'xls'
+              ? 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              : ext === 'docx' || ext === 'doc'
+                ? 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                : ext === 'html'
+                  ? 'text/html'
+                  : 'application/octet-stream';
+        files.push({
+          id,
+          name,
+          mimeType,
+          modifiedTime: new Date().toISOString(),
+          webViewLink: `https://drive.google.com/file/d/${id}/view?usp=sharing`,
+        });
+      }
+    }
+  }
+
+  return files;
+}
+
+// 폴더 바로 아래 파일 목록 (하위 폴더·휴지통 제외). 파일 내용은 읽지 않는다
+// 서비스 계정이 있으면 API 호출, 없거나 실패 시 공개 폴더 파싱으로 fallback
+export async function listFolder(folderId: string): Promise<DriveFile[]> {
+  if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+    try {
+      const params = new URLSearchParams({
+        q: `'${folderId.replace(/'/g, "\\'")}' in parents and trashed = false and mimeType != 'application/vnd.google-apps.folder'`,
+        fields: 'files(id,name,mimeType,modifiedTime,webViewLink)',
+        orderBy: 'name',
+        pageSize: '200',
+      });
+      const files = (await googleGet<{ files?: DriveFile[] }>(`https://www.googleapis.com/drive/v3/files?${params}`)).files;
+      if (files && files.length > 0) return files;
+    } catch (e) {
+      console.warn('[listFolder] 서비스 계정 조회 실패, 공개 폴더 파싱으로 전환:', e);
+    }
+  }
+
+  // 서비스 계정 미설정이거나 결과가 비어있는 경우 공개 폴더 조회 시도
+  return await listPublicFolder(folderId);
 }
