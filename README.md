@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>삼성그룹코칭 동호회(삼코동) 코치의 다회기 코칭 Journey 전 과정을 지원하는 통합 반응형 웹 포털</strong>
+  <strong>삼코동 코치의 다회기 코칭 Journey 전 과정을 지원하는 통합 반응형 웹 포털</strong>
 </p>
 
 <p align="center">
@@ -202,6 +202,6 @@ git pull origin main
 ---
 
 <p align="center">
-  © 2026 삼코동 (삼성그룹코칭 동호회). All rights reserved.
+  © 2026 삼코동. All rights reserved.
 </p>
 

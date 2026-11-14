@@ -21,13 +21,13 @@ export default function LoginPage({ searchParams }: { searchParams: SearchParams
     <div className="min-h-dvh bg-base text-main">
       <header className="mx-auto flex max-w-[1200px] items-center gap-3 px-4 py-5 sm:px-8">
         <Image src="/brand/samkodong-logo-original.svg" alt="삼코동 Samsung Coaching Club" width={114} height={40} priority className="h-10 w-auto" />
-        <span className="border-l border-line pl-3 font-medium text-body">삼성코칭동호회 코칭 포털</span>
+        <span className="border-l border-line pl-3 font-medium text-body">삼코동 코칭 포털</span>
       </header>
 
       <section className="mx-auto grid max-w-[1200px] gap-10 px-4 pb-6 pt-4 sm:px-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center lg:pt-10">
         <div className="flex min-w-0 flex-col gap-5">
           <p className="self-start rounded-full bg-primary-light px-4 py-2 text-caption font-semibold text-primary-strong">
-            삼성코칭동호회 · 고객 주도형 다회기 코칭
+            삼코동 · 고객 주도형 다회기 코칭
           </p>
           <h1 className="break-keep text-[clamp(2.25rem,4.6vw,3.75rem)] font-bold leading-tight tracking-tight">
             더 나은 내일로 향하는
@@ -35,7 +35,7 @@ export default function LoginPage({ searchParams }: { searchParams: SearchParams
             <span className="text-primary">코칭 가이드</span>
           </h1>
           <p className="max-w-[34em] break-keep text-lg leading-relaxed text-body">
-            삼성코칭동호회와 함께 걷는 코칭의 길. 시작 세션의 첫 대화부터 Follow-up까지, 고객이 스스로 방향을 찾아가는 여정을 곁에서 돕습니다.
+            삼코동과 함께 걷는 코칭의 길. 시작 세션의 첫 대화부터 Follow-up까지, 고객이 스스로 방향을 찾아가는 여정을 곁에서 돕습니다.
           </p>
           <p className="break-keep text-lg font-semibold text-primary-strong">함께, 더 멀리 — 당신의 여정을 응원합니다</p>
         </div>
@@ -84,11 +84,11 @@ export default function LoginPage({ searchParams }: { searchParams: SearchParams
           <br />
           좋은 대화가 더 나은 변화를 만듭니다.”
         </p>
-        <p className="mt-4 font-semibold text-primary-strong">삼성코칭동호회가 함께합니다</p>
+        <p className="mt-4 font-semibold text-primary-strong">삼코동이 함께합니다</p>
       </section>
 
       <footer className="border-t border-line">
-        <p className="mx-auto max-w-[1200px] px-4 py-6 text-caption text-muted sm:px-8">삼성코칭동호회(삼코동) 코치 전용 포털 · 공용 비밀번호로 입장합니다</p>
+        <p className="mx-auto max-w-[1200px] px-4 py-6 text-caption text-muted sm:px-8">삼코동 코치 전용 포털 · 공용 비밀번호로 입장합니다</p>
       </footer>
     </div>
   );
