@@ -7,6 +7,7 @@ import {
   BarChart3,
   BookOpen,
   ChevronRight,
+  ChevronsUpDown,
   FileText,
   Globe,
   House,
@@ -49,15 +50,24 @@ function initialOpen(type: CoachingType | null): Set<CoachingType> {
   return new Set(type ? [type] : []);
 }
 
-function GroupTitle({ children, isFirst }: { children: string; isFirst?: boolean }) {
+function GroupHeader({
+  children,
+  isFirst,
+  action,
+}: {
+  children: string;
+  isFirst?: boolean;
+  action?: React.ReactNode;
+}) {
   return (
-    <h2
+    <div
       className={`${
         isFirst ? 'mt-3' : 'mt-5'
-      } mb-2 flex items-center rounded-md border border-line bg-subtle px-3 py-1.5 text-caption font-bold tracking-wider text-main shadow-xs`}
+      } mb-2 flex items-center justify-between rounded-md border border-line bg-subtle px-3 py-1.5`}
     >
-      {children}
-    </h2>
+      <h2 className="text-caption font-bold tracking-wider text-main">{children}</h2>
+      {action}
+    </div>
   );
 }
 
@@ -78,11 +88,38 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
       return { ...prev, open };
     });
 
+  const isAllOpen = COACHING_TYPES.every((t) => expanded.has(t));
+
+  const toggleAll = () => {
+    setState((prev) => {
+      const nextOpen = isAllOpen ? new Set<CoachingType>() : new Set<CoachingType>(COACHING_TYPES);
+      return { ...prev, open: nextOpen };
+    });
+  };
+
   return (
     <>
       {NAV_GROUPS.map((group, idx) => (
         <div key={group.title}>
-          <GroupTitle isFirst={idx === 0}>{group.title}</GroupTitle>
+          <GroupHeader
+            isFirst={idx === 0}
+            action={
+              group.kind === 'coaching' ? (
+                <button
+                  type="button"
+                  onClick={toggleAll}
+                  aria-label={isAllOpen ? '코칭 모델 전체 접기' : '코칭 모델 전체 펼치기'}
+                  title={isAllOpen ? '코칭 모델 전체 접기' : '코칭 모델 전체 펼치기'}
+                  className="flex items-center gap-1 rounded border border-line bg-surface px-1.5 py-0.5 text-[0.7rem] font-semibold text-muted transition hover:bg-subtle hover:text-main active:scale-[0.96]"
+                >
+                  <ChevronsUpDown size={12} aria-hidden />
+                  <span>{isAllOpen ? '전체 접기' : '전체 펼치기'}</span>
+                </button>
+              ) : undefined
+            }
+          >
+            {group.title}
+          </GroupHeader>
           {group.kind === 'links' ? (
             <ul>
               {group.links.map((link) => {
@@ -116,23 +153,30 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
               const open = expanded.has(type);
               const listId = `stages-${type}`;
               return (
-                <div key={type}>
+                <div key={type} className="mb-1">
                   <button
                     type="button"
                     onClick={() => toggle(type)}
                     aria-expanded={open}
                     aria-controls={listId}
-                    className="flex min-h-10 w-full items-center gap-2 rounded-md px-2 text-left font-semibold text-primary hover:bg-subtle"
+                    className={`group flex min-h-10 w-full items-center gap-2 rounded-md px-2.5 text-left font-semibold transition ${
+                      open ? 'bg-subtle text-primary-strong' : 'text-primary hover:bg-subtle'
+                    }`}
                   >
                     <span className="size-2 shrink-0 rounded-full bg-primary" aria-hidden />
-                    {info.name}
+                    <span className="flex-1 truncate">{info.name}</span>
+                    <span className="rounded bg-surface px-1.5 py-0.5 text-[0.7rem] font-medium text-muted shadow-xs group-hover:text-body">
+                      {open ? '접기' : '펼치기'}
+                    </span>
                     <ChevronRight
-                      size={18}
+                      size={16}
                       aria-hidden
-                      className={`ml-auto transition-transform ${open ? 'rotate-90' : ''}`}
+                      className={`shrink-0 transition-transform duration-200 ${
+                        open ? 'rotate-90 text-primary' : 'text-muted'
+                      }`}
                     />
                   </button>
-                  <ul id={listId} hidden={!open} className="mb-2">
+                  <ul id={listId} hidden={!open} className="mt-1 mb-2">
                     {STAGES.map((stage) => {
                       const href = `/coaching/${type}/${stage}`;
                       const label = `${stageTitle(stage)} · ${info.themes[stage]}`;
