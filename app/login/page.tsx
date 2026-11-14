@@ -57,8 +57,10 @@ export default function LoginPage({ searchParams }: { searchParams: SearchParams
         </section>
       </section>
 
-      <div className="mx-auto flex max-w-[1440px] justify-end overflow-hidden">
-        <JourneyIllustration />
+      <div className="mx-auto max-w-[1200px] px-4 pb-8 sm:px-8 sm:pb-12">
+        <div className="flex justify-end overflow-hidden rounded-2xl">
+          <JourneyIllustration />
+        </div>
       </div>
 
       <section className="bg-surface">
@@ -78,7 +80,7 @@ export default function LoginPage({ searchParams }: { searchParams: SearchParams
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1000px] px-4 py-16 text-center sm:px-8">
+      <section className="mx-auto max-w-[1200px] px-4 py-16 text-center sm:px-8">
         <p className="break-keep text-[clamp(1.5rem,2.8vw,2.25rem)] font-semibold leading-snug">
           “좋은 질문이 좋은 대화를 만들고,
           <br />
