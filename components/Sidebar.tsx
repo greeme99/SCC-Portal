@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
   BarChart3,
@@ -50,6 +50,7 @@ const itemActive =
 const ALL_GROUP_TITLES = NAV_GROUPS.map((g) => g.title);
 
 export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
+  const router = useRouter();
   const pathname = usePathname();
   const currentType = coachingTypeFromPath(pathname);
 
@@ -67,6 +68,9 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
     if (isAnyOpen) {
       setOpenGroups(new Set());
       setOpenTypes(new Set());
+      // 최상위에서 카테고리 레벨로 접으면 메인 패널의 내용도 '프로그램 개요' 화면으로 이동
+      router.push('/program/overview');
+      onNavigate();
     } else {
       setOpenGroups(new Set(ALL_GROUP_TITLES));
       setOpenTypes(new Set());
