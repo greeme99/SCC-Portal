@@ -63,7 +63,7 @@ describe('구글폼 생성 스크립트 (scripts/google/create-forms.gs)', () =>
   it('forms.json으로 만든 최신 상태다 — 다르면 node scripts/google/build-forms-script.mjs 실행', async () => {
     const { buildScript } = await import('../../scripts/google/build-forms-script.mjs');
     const json = JSON.parse(readFileSync(new URL('../../content/forms.json', import.meta.url), 'utf8'));
-    expect(readFileSync(new URL('../../scripts/google/create-forms.gs', import.meta.url), 'utf8')).toBe(buildScript(json));
+    expect(readFileSync(new URL('../../scripts/google/create-forms.gs', import.meta.url), 'utf8').replace(/\r\n/g, '\n')).toBe(buildScript(json).replace(/\r\n/g, '\n'));
   });
 });
 
