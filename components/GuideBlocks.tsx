@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 
 export function Card({ title, source, id, children }: { title: ReactNode; source?: string; id?: string; children: ReactNode }) {
   return (
-    <section id={id} className="mb-6 scroll-mt-20 rounded-lg bg-surface p-6 shadow-card">
+    <section id={id} className="mb-6 scroll-mt-20 rounded-2xl border border-line bg-surface p-6 shadow-card transition-all duration-200 hover:shadow-hover">
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-h2 text-main">{title}</h2>
         {/* 출처 표시 — 문구가 가이드북 원문임을 확인할 수 있게 한다 (RULE-007) */}

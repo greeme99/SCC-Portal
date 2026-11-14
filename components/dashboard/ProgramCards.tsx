@@ -63,16 +63,16 @@ export function ProgramCards() {
       {result.status === 'ok' && (
         <section aria-label="주요 현황 지표" className="mb-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {/* 1. Ongoing */}
-          <div className="flex flex-col justify-between rounded-xl border border-line bg-surface p-4 shadow-card">
+          <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer">
             <div className="flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-full bg-primary-light text-primary">
-                <Play size={16} className="fill-current" aria-hidden />
+              <span className="grid size-10 place-items-center rounded-full bg-primary-light text-primary shadow-xs">
+                <Play size={17} className="fill-current" aria-hidden />
               </span>
-              <span className="rounded-full bg-subtle px-2 py-0.5 text-[0.75rem] font-bold text-primary">
+              <span className="rounded-md border border-line bg-subtle px-2 py-0.5 text-[0.75rem] font-bold text-primary">
                 Ongoing
               </span>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <span className="block text-caption text-muted">진행중 프로그램</span>
               <span className="text-h2 font-bold text-main">
                 {activeCount} <span className="text-body font-normal text-muted">건</span>
@@ -81,16 +81,16 @@ export function ProgramCards() {
           </div>
 
           {/* 2. 등록 프로그램 */}
-          <div className="flex flex-col justify-between rounded-xl border border-line bg-surface p-4 shadow-card">
+          <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer">
             <div className="flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-full bg-subtle text-main">
-                <FolderKanban size={16} aria-hidden />
+              <span className="grid size-10 place-items-center rounded-full bg-subtle text-main shadow-xs">
+                <FolderKanban size={18} aria-hidden />
               </span>
-              <span className="rounded-full bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
+              <span className="rounded-md border border-line bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
                 전체 등록
               </span>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <span className="block text-caption text-muted">개설 프로그램</span>
               <span className="text-h2 font-bold text-main">
                 {programs.length} <span className="text-body font-normal text-muted">건</span>
@@ -99,16 +99,16 @@ export function ProgramCards() {
           </div>
 
           {/* 3. 코칭 참여 피코치 */}
-          <div className="flex flex-col justify-between rounded-xl border border-line bg-surface p-4 shadow-card">
+          <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer">
             <div className="flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-full bg-subtle text-primary">
-                <Users size={16} aria-hidden />
+              <span className="grid size-10 place-items-center rounded-full bg-subtle text-primary shadow-xs">
+                <Users size={18} aria-hidden />
               </span>
-              <span className="rounded-full bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
+              <span className="rounded-md border border-line bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
                 피코치
               </span>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <span className="block text-caption text-muted">참여 고객 누계</span>
               <span className="text-h2 font-bold text-main">
                 {totalClients} <span className="text-body font-normal text-muted">명</span>
@@ -117,16 +117,16 @@ export function ProgramCards() {
           </div>
 
           {/* 4. 코칭일지 제출 */}
-          <div className="flex flex-col justify-between rounded-xl border border-line bg-surface p-4 shadow-card">
+          <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer">
             <div className="flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-full bg-subtle text-star">
-                <FileCheck size={16} aria-hidden />
+              <span className="grid size-10 place-items-center rounded-full bg-subtle text-star shadow-xs">
+                <FileCheck size={18} aria-hidden />
               </span>
-              <span className="rounded-full bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
+              <span className="rounded-md border border-line bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
                 일지 기록
               </span>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <span className="block text-caption text-muted">제출된 코칭일지</span>
               <span className="text-h2 font-bold text-main">
                 {totalSubmitted} <span className="text-body font-normal text-muted">/ {totalPlanned}</span>
@@ -135,16 +135,16 @@ export function ProgramCards() {
           </div>
 
           {/* 5. 완료 프로그램 */}
-          <div className="flex flex-col justify-between rounded-xl border border-line bg-surface p-4 shadow-card col-span-2 sm:col-span-1">
+          <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card col-span-2 sm:col-span-1 transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer">
             <div className="flex items-center justify-between">
-              <span className="grid size-9 place-items-center rounded-full bg-subtle text-primary-strong">
-                <Award size={16} aria-hidden />
+              <span className="grid size-10 place-items-center rounded-full bg-subtle text-primary-strong shadow-xs">
+                <Award size={18} aria-hidden />
               </span>
-              <span className="rounded-full bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
+              <span className="rounded-md border border-line bg-subtle px-2 py-0.5 text-[0.75rem] font-semibold text-body">
                 완료 현황
               </span>
             </div>
-            <div className="mt-3">
+            <div className="mt-4">
               <span className="block text-caption text-muted">완료된 코칭</span>
               <span className="text-h2 font-bold text-main">
                 {closedCount} <span className="text-body font-normal text-muted">건</span>
@@ -207,12 +207,12 @@ export function ProgramCards() {
           )}
 
           {/* 두 번째 이미지 참조: 바로가기 및 코칭 게시판 */}
-          <section aria-label="코칭 안내 게시판" className="mt-8 rounded-xl border border-line bg-surface p-6 shadow-card">
+          <section aria-label="코칭 안내 게시판" className="mt-8 rounded-2xl border border-line bg-surface p-6 shadow-card">
             <h2 className="mb-4 text-h3 font-bold text-main">코칭 포털 안내 및 빠른 실행</h2>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Link
                 href="/program/overview"
-                className="flex items-center justify-between rounded-lg border border-line bg-subtle/60 p-4 transition hover:bg-subtle hover:border-primary/40"
+                className="flex items-center justify-between rounded-xl border border-line bg-surface p-4 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer"
               >
                 <div>
                   <strong className="block text-body font-semibold text-main">프로그램 개요</strong>
@@ -222,7 +222,7 @@ export function ProgramCards() {
               </Link>
               <Link
                 href="/records/journal"
-                className="flex items-center justify-between rounded-lg border border-line bg-subtle/60 p-4 transition hover:bg-subtle hover:border-primary/40"
+                className="flex items-center justify-between rounded-xl border border-line bg-surface p-4 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer"
               >
                 <div>
                   <strong className="block text-body font-semibold text-main">회기별 코칭일지</strong>
@@ -232,7 +232,7 @@ export function ProgramCards() {
               </Link>
               <Link
                 href="/tools"
-                className="flex items-center justify-between rounded-lg border border-line bg-subtle/60 p-4 transition hover:bg-subtle hover:border-primary/40"
+                className="flex items-center justify-between rounded-xl border border-line bg-surface p-4 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer"
               >
                 <div>
                   <strong className="block text-body font-semibold text-main">코칭 툴 나눔터</strong>
@@ -242,7 +242,7 @@ export function ProgramCards() {
               </Link>
               <Link
                 href="/references"
-                className="flex items-center justify-between rounded-lg border border-line bg-subtle/60 p-4 transition hover:bg-subtle hover:border-primary/40"
+                className="flex items-center justify-between rounded-xl border border-line bg-surface p-4 shadow-card transition-all duration-200 hover:-translate-y-1 hover:shadow-hover hover:border-primary/40 cursor-pointer"
               >
                 <div>
                   <strong className="block text-body font-semibold text-main">참조 자료실</strong>
@@ -263,7 +263,7 @@ function ProgramCardLink({ program: p }: { program: ProgramCard }) {
   return (
     <Link
       href={`/dashboard?program=${encodeURIComponent(p.programId)}`}
-      className="flex h-full flex-col rounded-lg bg-surface p-5 shadow-card transition-shadow hover:shadow-hover"
+      className="flex h-full flex-col rounded-2xl border border-line bg-surface p-6 shadow-card transition-all duration-200 hover:-translate-y-1.5 hover:shadow-hover hover:border-primary/50 cursor-pointer"
     >
       <span className="text-h3 text-main">{p.name || p.programId}</span>
       <span className="mt-1 text-caption text-muted">{p.programId}</span>

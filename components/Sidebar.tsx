@@ -136,11 +136,11 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
               onClick={() => toggleGroup(group.title)}
               aria-expanded={isGroupOpen}
               aria-controls={contentId}
-              className="mb-1.5 flex min-h-9 w-full items-center justify-between rounded-md border border-line bg-subtle px-3 py-1.5 text-left transition hover:bg-hover active:scale-[0.99]"
+              className="mb-1.5 flex min-h-10 w-full items-center justify-between rounded-md border border-line bg-subtle px-3 py-1.5 text-left transition hover:bg-hover active:scale-[0.99]"
             >
-              <h2 className="text-caption font-bold tracking-wider text-main">{group.title}</h2>
+              <h2 className="text-body font-bold text-main">{group.title}</h2>
               <ChevronDown
-                size={15}
+                size={16}
                 aria-hidden
                 className={`text-muted transition-transform duration-200 ${isGroupOpen ? 'rotate-180' : ''}`}
               />
@@ -187,18 +187,16 @@ export function Sidebar({ onNavigate }: { onNavigate: () => void }) {
                         onClick={() => toggleType(type)}
                         aria-expanded={isOpen}
                         aria-controls={listId}
-                        className={`group flex min-h-10 w-full items-center gap-2 rounded-md px-2.5 text-left font-semibold transition ${
-                          isOpen ? 'bg-subtle text-primary-strong' : 'text-primary hover:bg-subtle'
-                        }`}
+                        className={`group flex min-h-10 w-full items-center gap-2 rounded-md px-2.5 text-left text-body font-semibold transition ${isOpen ? 'bg-subtle text-primary-strong' : 'text-primary hover:bg-subtle'
+                          }`}
                       >
                         <span className="size-2 shrink-0 rounded-full bg-primary" aria-hidden />
                         <span className="flex-1 truncate">{info.name}</span>
                         <ChevronRight
                           size={16}
                           aria-hidden
-                          className={`shrink-0 text-muted transition-transform duration-200 ${
-                            isOpen ? 'rotate-90 text-primary' : ''
-                          }`}
+                          className={`shrink-0 text-muted transition-transform duration-200 ${isOpen ? 'rotate-90 text-primary' : ''
+                            }`}
                         />
                       </button>
                       <ul id={listId} hidden={!isOpen} className="mt-1 mb-2">

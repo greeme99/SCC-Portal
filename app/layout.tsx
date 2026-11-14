@@ -21,8 +21,7 @@ export const viewport: Viewport = {
 const THEME_SCRIPT = `
   try {
     var saved = localStorage.getItem('scd.theme');
-    var isDark = saved === 'dark' || ((saved === 'system' || !saved) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if (isDark) document.documentElement.setAttribute('data-theme', 'dark');
+    if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   } catch (e) {}
 `;
 
