@@ -30,8 +30,8 @@ if %errorlevel% neq 0 (
 :: 2. .env.local 확인 (비밀번호 미설정 시 발생하는 503 방지)
 if not exist ".env.local" (
     echo [.env.local 생성] 로컬 테스트용 환경변수 파일이 없어 생성합니다.
-    echo SITE_PASSWORD=1234 > .env.local
-    echo [안내] 기본 사이트 입장 비밀번호가 "1234"로 설정되었습니다.
+    echo SITE_PASSWORD=scc123 > .env.local
+    echo [안내] 기본 사이트 입장 비밀번호가 "scc123"으로 설정되었습니다.
     echo       (.env.local 파일에서 언제든 변경할 수 있습니다.)
     echo.
 )
