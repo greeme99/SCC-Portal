@@ -111,8 +111,13 @@ export function ReferenceList() {
           <span className="sr-only">KCA코칭역량모델_해설집_V10 열기 (새 창)</span>
         </a>
 
-        {/* 카드 3: VIDEO (To-be-updated - 맨 우측 배치) */}
-        <div className="flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card transition-all duration-200 hover:-translate-y-1.5 hover:shadow-hover hover:border-primary/50">
+        {/* 카드 3: VIDEO (유튜브 영상 링크 & 썸네일) */}
+        <a
+          href="https://youtu.be/XYsac3YzcBE?si=30099i_yfbudTxTE"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex flex-col justify-between rounded-2xl border border-line bg-surface p-5 shadow-card transition-all duration-200 hover:-translate-y-1.5 hover:shadow-hover hover:border-primary/50 cursor-pointer"
+        >
           <div>
             <div className="flex items-center justify-between">
               <div className="grid size-10 place-items-center rounded-full bg-primary-light text-primary">
@@ -122,19 +127,35 @@ export function ReferenceList() {
                 VIDEO
               </span>
             </div>
-            <h3 className="mt-4 text-h3 font-bold text-main">To-be-updated</h3>
-            <p className="mt-1 text-caption text-muted">영상 콘텐츠 업데이트 예정</p>
+
+            <div className="relative mt-3 aspect-video w-full overflow-hidden rounded-xl border border-line bg-subtle">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://i.ytimg.com/vi/XYsac3YzcBE/hqdefault.jpg"
+                alt="KPC 수준 코칭 대화? 유튜브 썸네일"
+                className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute inset-0 grid place-items-center bg-scrim/20 transition-opacity group-hover:bg-scrim/10">
+                <span className="grid size-9 place-items-center rounded-full bg-surface/90 text-primary shadow-sm backdrop-blur-xs transition-transform group-hover:scale-110">
+                  <Play size={16} className="fill-primary ml-0.5" aria-hidden />
+                </span>
+              </div>
+            </div>
+
+            <h3 className="mt-3 text-h3 font-bold text-main group-hover:text-primary transition-colors">
+              KPC 수준 코칭 대화?
+            </h3>
+            <p className="mt-1 text-caption text-muted">코칭놀이터 · 추천 코칭 시연 및 해설 영상</p>
           </div>
           <div className="mt-6 flex items-center justify-between border-t border-line/60 pt-3">
-            <span className="text-caption font-medium text-muted">준비중</span>
-            <span
-              aria-hidden="true"
-              className="grid size-9 place-items-center rounded-lg border border-line bg-subtle text-muted"
-            >
-              <Download size={16} aria-hidden />
+            <span className="text-caption font-medium text-muted">YouTube 영상</span>
+            <span className="grid size-9 place-items-center rounded-lg border border-line bg-subtle text-primary transition-colors group-hover:bg-primary group-hover:text-on-primary">
+              <ExternalLink size={16} aria-hidden />
             </span>
           </div>
-        </div>
+          <span className="sr-only">KPC 수준 코칭 대화? 유튜브 동영상 열기 (새 창)</span>
+        </a>
       </section>
 
       {/* 자료 등록 액션 툴바 (동영상, 문서 업로드, 링크주소 등록 메뉴) */}
