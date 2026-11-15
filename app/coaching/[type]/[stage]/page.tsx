@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, PenLine } from 'lucide-react';
 import { PageHeader } from '@/components/PageHeader';
 import { Card, GridTable, KeyValueTable, QuestionList, Quote } from '@/components/GuideBlocks';
 import { STAGE_COMMON, TOOL_HUB_URL, TYPE_GUIDES, betweenAfter, toolsForStage } from '@/lib/content';
@@ -36,17 +36,29 @@ export default async function StagePage({ params }: { params: Promise<Params> })
   const index = STAGES.indexOf(stage);
   const prev = STAGES[index - 1];
   const next = STAGES[index + 1];
+  const isMainStage = ['1', '2', '3', '4', '5'].includes(stage);
 
   return (
     <>
       <PageHeader
         eyebrow={`${guide.name} › ${stageTitle(stage)}`}
         title={
-          <span className="inline-flex items-center gap-3">
-            <span aria-hidden className="grid size-8 place-items-center rounded-sm border border-primary bg-surface text-caption font-semibold text-primary">
-              {stageBadge(stage)}
+          <span className="flex flex-wrap items-center justify-between gap-3">
+            <span className="inline-flex items-center gap-3">
+              <span aria-hidden className="grid size-8 place-items-center rounded-sm border border-primary bg-surface text-caption font-semibold text-primary">
+                {stageBadge(stage)}
+              </span>
+              {typeStage.theme}
             </span>
-            {typeStage.theme}
+            {isMainStage && (
+              <Link
+                href="/records/journal"
+                className="inline-flex min-h-9 items-center gap-1.5 rounded-lg bg-primary px-3 text-caption font-semibold text-on-primary shadow-xs transition hover:opacity-90 cursor-pointer shrink-0"
+              >
+                <PenLine size={14} aria-hidden />
+                <span>코칭일지 작성하기</span>
+              </Link>
+            )}
           </span>
         }
         description={common.purpose}
@@ -76,7 +88,14 @@ export default async function StagePage({ params }: { params: Promise<Params> })
           )}
           {extra && (
             <Card title={extra.title} source={guide.source}>
-              <Quote>{extra.text}</Quote>
+              <details>
+                <summary className="cursor-pointer font-semibold text-primary">
+                  {extra.title} 보기
+                </summary>
+                <div className="mt-3">
+                  <Quote>{extra.text}</Quote>
+                </div>
+              </details>
             </Card>
           )}
         </div>
@@ -84,28 +103,54 @@ export default async function StagePage({ params }: { params: Promise<Params> })
 
       {guide.share && (
         <Card title="멘토 경험 공유 프로토콜: SHARE" source="가이드북 19.5">
-          <GridTable columns={['단계', '의미', '멘토 발화 예시']} rows={guide.share} />
+          <details>
+            <summary className="cursor-pointer font-semibold text-primary">
+              SHARE 프로토콜 {guide.share.length}단계 보기
+            </summary>
+            <div className="mt-3">
+              <GridTable columns={['단계', '의미', '멘토 발화 예시']} rows={guide.share} />
+            </div>
+          </details>
         </Card>
       )}
 
       {common.sheet && (
         <Card title={common.sheet.title} source={common.source}>
-          <KeyValueTable rows={common.sheet.rows} />
+          <details>
+            <summary className="cursor-pointer font-semibold text-primary">
+              {(() => {
+                const label = common.sheet.title.replace(/\s*\([^)]*\)/, '').trim();
+                return label.endsWith('항목')
+                  ? `${label} ${common.sheet.rows.length}개 보기`
+                  : `${label} ${common.sheet.rows.length}개 항목 보기`;
+              })()}
+            </summary>
+            <div className="mt-3">
+              <KeyValueTable rows={common.sheet.rows} />
+            </div>
+          </details>
         </Card>
       )}
 
       {between && (
         <Card title={`다음 Between Session: ${between.name}`} source={between.source} id="between">
-          <p className="mb-4 text-body">{between.purpose}</p>
-          <KeyValueTable rows={between.rows} />
-          {guide.betweenExamples && (
-            <details className="mt-4">
-              <summary className="cursor-pointer font-semibold text-primary">{guide.name} Between Session 예시</summary>
-              <div className="mt-3">
-                <GridTable columns={guide.betweenExamples.columns} rows={guide.betweenExamples.rows} />
-              </div>
-            </details>
-          )}
+          <details>
+            <summary className="cursor-pointer font-semibold text-primary">
+              Between Session 안내 및 {between.rows.length}개 항목 보기
+            </summary>
+            <div className="mt-3">
+              <p className="mb-4 text-body">{between.purpose}</p>
+              <KeyValueTable rows={between.rows} />
+              {guide.betweenExamples && (
+                <details className="mt-4">
+                  <summary className="cursor-pointer font-semibold text-primary">{guide.name} Between Session 예시</summary>
+                  <div className="mt-3">
+                    <GridTable columns={guide.betweenExamples.columns} rows={guide.betweenExamples.rows} />
+                  </div>
+                </details>
+              )}
+            </div>
+          </details>
         </Card>
       )}
 
@@ -120,28 +165,33 @@ export default async function StagePage({ params }: { params: Promise<Params> })
 
       {tools.length > 0 && (
         <Card title="이 회기 추천 도구" source="가이드북 27.15">
-          <ul>
-            {tools.map((tool) => (
-              <li key={tool.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3 last:border-b-0">
-                <span className="min-w-0">
-                  <span className={`mr-2 inline-block rounded-full px-2.5 py-0.5 text-caption ${tool.level === 'primary' ? 'bg-primary-light text-primary-strong' : 'bg-subtle text-body'}`}>
-                    {tool.level === 'primary' ? '우선' : '보조'}
+          <details>
+            <summary className="cursor-pointer font-semibold text-primary">
+              추천 도구 {tools.length}개 보기
+            </summary>
+            <ul className="mt-3">
+              {tools.map((tool) => (
+                <li key={tool.id} className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3 last:border-b-0">
+                  <span className="min-w-0">
+                    <span className={`mr-2 inline-block rounded-full px-2.5 py-0.5 text-caption ${tool.level === 'primary' ? 'bg-primary-light text-primary-strong' : 'bg-subtle text-body'}`}>
+                      {tool.level === 'primary' ? '우선' : '보조'}
+                    </span>
+                    <span className="font-semibold text-main">{tool.name}</span>
+                    <span className="text-body"> — {tool.purpose}</span>
                   </span>
-                  <span className="font-semibold text-main">{tool.name}</span>
-                  <span className="text-body"> — {tool.purpose}</span>
-                </span>
-                <a
-                  href={tool.hubUrl || TOOL_HUB_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center gap-1 rounded-full border border-line bg-surface px-4 font-semibold text-main hover:bg-subtle"
-                >
-                  나눔터 <ExternalLink size={16} aria-hidden />
-                  <span className="sr-only">(새 창)</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+                  <a
+                    href={tool.hubUrl || TOOL_HUB_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex min-h-11 items-center gap-1 rounded-full border border-line bg-surface px-4 font-semibold text-main hover:bg-subtle"
+                  >
+                    나눔터 <ExternalLink size={16} aria-hidden />
+                    <span className="sr-only">(새 창)</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
         </Card>
       )}
 
