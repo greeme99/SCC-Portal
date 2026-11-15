@@ -9,6 +9,11 @@ const STORAGE_KEY = 'scd.theme';
 function applyTheme(target: Theme) {
   if (typeof document === 'undefined') return;
   document.documentElement.setAttribute('data-theme', target);
+  document.querySelectorAll('iframe').forEach((frame) => {
+    try {
+      frame.contentWindow?.postMessage({ type: 'scd:set-theme', theme: target }, '*');
+    } catch {}
+  });
 }
 
 function readTheme(): Theme {

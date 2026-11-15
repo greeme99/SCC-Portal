@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Bell, Menu, Search } from 'lucide-react';
+import { Bell, BookOpen, Menu, Search } from 'lucide-react';
 import { Suspense, useCallback, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from 'react';
 import { Sidebar, SidebarFallback } from './Sidebar';
 import { ThemeToggle } from './ThemeToggle';
@@ -18,6 +18,7 @@ function pageTitleFromPath(pathname: string): string {
   if (pathname === '/records/client-reflection') return '피코치 종료소감';
   if (pathname === '/tools') return '코칭 툴 나눔터';
   if (pathname.startsWith('/references')) return '참조 자료실';
+  if (pathname === '/manual') return '온라인 사용자 매뉴얼';
   return '삼코동 코칭 포털';
 }
 
@@ -170,6 +171,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             />
           </div>
           <ThemeToggle />
+          <Link
+            href="/manual"
+            aria-label="온라인 사용자 매뉴얼"
+            title="온라인 사용자 매뉴얼 (전체 개요 & 모션 가이드)"
+            className={`grid size-9 shrink-0 place-items-center rounded-lg border border-line bg-surface text-body transition hover:border-primary/50 hover:bg-subtle hover:text-primary ${
+              pathname === '/manual' ? 'border-primary bg-primary-light text-primary' : ''
+            }`}
+          >
+            <BookOpen size={17} strokeWidth={1.75} aria-hidden />
+          </Link>
           <button
             type="button"
             aria-label="알림"
