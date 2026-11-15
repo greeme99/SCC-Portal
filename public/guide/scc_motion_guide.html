@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SCC Coaching Portal — 모션 다이어그램 가이드</title>
+  <script>
+    (function() {
+      try {
+        var t = null;
+        if (window.parent && window.parent !== window) {
+          try {
+            t = window.parent.document.documentElement.getAttribute('data-theme');
+          } catch(e) {}
+        }
+        if (!t) {
+          try {
+            t = localStorage.getItem('scd.theme');
+          } catch(e) {}
+        }
+        if (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          t = 'dark';
+        }
+        if (t === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch(e) {}
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --card-bg: #FFFFFF;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --line: #E2E8F0;
+      --line-active: #0284C7;
+      --primary: #0284C7;
+      --primary-light: #E0F2FE;
+      --primary-glow: rgba(2, 132, 199, 0.25);
+      --accent-green: #059669;
+      --accent-green-light: #D1FAE5;
+      --accent-amber: #D97706;
+      --accent-amber-light: #FEF3C7;
+      --accent-purple: #7C3AED;
+      --accent-purple-light: #EDE9FE;
+      --border-active: #0284C7;
+      --node-between-bg: #F8FAFC;
+      --header-bg: rgba(255, 255, 255, 0.94);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --shadow-hover: 0 10px 25px -5px rgba(2, 132, 199, 0.2);
+      --pulse-glow: 0 0 0 6px rgba(2, 132, 199, 0.25);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B1120;
+      --surface: #131D33;
+      --card-bg: #1A2642;
+      --text-main: #F1F5F9;
+      --text-muted: #94A3B8;
+      --line: #263554;
+      --line-active: #38BDF8;
+      --primary: #38BDF8;
+      --primary-light: rgba(56, 189, 248, 0.15);
+      --primary-glow: rgba(56, 189, 248, 0.4);
+      --accent-green: #34D399;
+      --accent-green-light: rgba(52, 211, 153, 0.15);
+      --accent-amber: #FBBF24;
+      --accent-amber-light: rgba(251, 191, 36, 0.15);
+      --accent-purple: #A78BFA;
+      --accent-purple-light: rgba(167, 139, 250, 0.15);
+      --border-active: #38BDF8;
+      --node-between-bg: #162238;
+      --header-bg: rgba(19, 29, 51, 0.94);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+      --shadow-md: 0 4px 14px rgba(0,0,0,0.4);
+      --shadow-hover: 0 10px 25px -5px rgba(56, 189, 248, 0.35);
+      --pulse-glow: 0 0 0 8px rgba(56, 189, 248, 0.35);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; transition: background-color 0.2s, border-color 0.2s, color 0.2s; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Pretendard Variable", Pretendard, system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.5;
+      padding-bottom: 80px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* 상단 고정 헤더 & 통합 컨트롤 */
+    header.sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(12px);
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, #0284C7, #0EA5E9);
+      color: #FFFFFF;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.3);
+    }
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+    }
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: 6px;
+    }
+
+    /* 탭 내비게이션 */
+    .tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background-color: var(--surface);
+      border: 1px solid var(--line);
+      padding: 4px;
+      border-radius: 12px;
+    }
+    .tab-btn {
+      border: none;
+      background: transparent;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background-color: var(--primary-light);
+    }
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px var(--primary-glow);
+    }
+
+    /* 제어 버튼 그룹 */
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background-color: var(--surface);
+      color: var(--text-main);
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      user-select: none;
+    }
+    .btn:hover {
+      border-color: var(--border-active);
+      background-color: var(--primary-light);
+      color: var(--primary);
+    }
+    .btn-play {
+      background-color: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+    .btn-play:hover {
+      background-color: #0284C7;
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px var(--primary-glow);
+    }
+    .btn-download {
+      background-color: var(--accent-green);
+      color: #FFFFFF;
+      border-color: var(--accent-green);
+    }
+    .btn-download:hover {
+      background-color: #047857;
+      color: #FFFFFF;
+    }
+
+    /* 메인 뷰 컨테이너 */
+    main.main-stage {
+      max-width: 1280px;
+      margin: 28px auto;
+      padding: 0 20px;
+    }
+
+    /* 실시간 내레이션 배너 */
+    .narration-banner {
+      background: linear-gradient(135deg, var(--surface), var(--primary-light));
+      border: 1px solid var(--border-active);
+      border-radius: 16px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .narration-banner::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 6px;
+      background: var(--primary);
+    }
+    .narration-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .narration-step-tag {
+      font-size: 11px;
+      font-weight: 800;
+      background: var(--primary);
+      color: #FFFFFF;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .narration-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .narration-progress {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* 스테이지 뷰어 (탭별 노출) */
+    .view-panel { display: none; }
+    .view-panel.active { display: block; animation: fadeIn 0.3s ease-out; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 다이어그램 캔버스 카드 */
+    .stage-card {
+      background-color: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 28px 24px;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 24px;
+      position: relative;
+      overflow-x: auto;
+    }
+    .stage-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+    .stage-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stage-card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* SVG S-Curve 플로우 스타일 */
+    .svg-flow-container {
+      width: 100%;
+      min-width: 920px;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+    .svg-flow {
+      display: block;
+      width: 100%;
+      height: auto;
+      overflow: visible;
+    }
+
+    .svg-node-group {
+      cursor: pointer;
+      outline: none;
+    }
+    .svg-node-group:hover .pill-main {
+      transform: translateY(-2px);
+      stroke: var(--border-active);
+      filter: drop-shadow(0 4px 10px var(--primary-glow));
+    }
+    .svg-node-group.active .pill-main {
+      stroke: var(--border-active);
+      stroke-width: 2.2px;
+      filter: drop-shadow(0 0 10px var(--primary-glow));
+    }
+    .svg-node-group.active.is-between .pill-main {
+      stroke: var(--accent-amber);
+      filter: drop-shadow(0 0 10px rgba(217, 119, 6, 0.4));
+    }
+    .svg-node-group.active .node-text-title {
+      font-weight: 800;
+      fill: var(--primary);
+    }
+    .svg-node-group.active.is-between .node-text-title {
+      fill: var(--accent-amber);
+    }
+
+    /* 전체 아키텍처 트리 뷰 (탭 1) */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .arch-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.25s;
+      position: relative;
+    }
+    .arch-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-active);
+      box-shadow: var(--shadow-hover);
+    }
+    .arch-card.active {
+      border-color: var(--border-active);
+      box-shadow: var(--pulse-glow);
+      background: linear-gradient(135deg, var(--card-bg), var(--primary-light));
+    }
+    .arch-card-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      letter-spacing: 0.05em;
+    }
+    .badge-blue { background: var(--primary-light); color: var(--primary); }
+    .badge-green { background: var(--accent-green-light); color: var(--accent-green); }
+    .badge-amber { background: var(--accent-amber-light); color: var(--accent-amber); }
+    .badge-purple { background: var(--accent-purple-light); color: var(--accent-purple); }
+    .arch-card-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .arch-card-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .arch-sub-list {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .arch-sub-item {
+      font-size: 12px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .arch-sub-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    /* 하단 상세 인스펙터 드로어 */
+    .inspector-drawer {
+      background-color: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px 28px;
+      box-shadow: var(--shadow-md);
+      display: grid;
+      grid-template-columns: 1.8fr 1.2fr;
+      gap: 28px;
+    }
+    @media (max-width: 860px) {
+      .inspector-drawer { grid-template-columns: 1fr; }
+    }
+    .drawer-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .drawer-badge {
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary);
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .drawer-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+    .checklist-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .chk-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+      background: var(--card-bg);
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+    }
+    .chk-icon {
+      color: var(--accent-green);
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    /* 우측 메타 명세 패널 */
+    .meta-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .meta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .meta-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .meta-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-main);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      word-break: break-all;
+      background: var(--bg);
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--line);
+    }
+    .meta-guide-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .meta-guide-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <script>
+    if (document.documentElement.getAttribute('data-theme') === 'dark') {
+      document.body.setAttribute('data-theme', 'dark');
+    }
+  </script>
+
+  <!-- 상단 고정 헤더 & 통합 컨트롤러 -->
+  <header class="sticky-header">
+    <div class="brand-area">
+      <span class="brand-badge">SCC PORTAL</span>
+      <h1 class="brand-title">모션 다이어그램 가이드</h1>
+      <span class="brand-sub">삼코동 코칭 포털 구조 및 사용법</span>
+    </div>
+
+    <!-- 3대 뷰 탭 바 -->
+    <nav class="tab-bar" aria-label="다이어그램 탭">
+      <button class="tab-btn active" data-tab="tab-arch" onclick="switchTab('tab-arch')">
+        <span>🌐</span> 전체 기능 구성도
+      </button>
+      <button class="tab-btn" data-tab="tab-journey" onclick="switchTab('tab-journey')">
+        <span>🧭</span> 1. 코칭 여정 (11단계 S라인)
+      </button>
+      <button class="tab-btn" data-tab="tab-workflow" onclick="switchTab('tab-workflow')">
+        <span>📋</span> 2. 코치 업무 절차 (7단계 S라인)
+      </button>
+    </nav>
+
+    <!-- 인터랙티브 컨트롤 버튼군 -->
+    <div class="controls-group">
+      <button id="btnPlay" class="btn btn-play" onclick="togglePlay()" title="단축키: Space">
+        <span id="playIcon">▷</span> <span id="playText">재생</span>
+      </button>
+      <button class="btn" onclick="prevStep()" title="단축키: ←">◀ 이전</button>
+      <button class="btn" onclick="nextStep()" title="단축키: →">다음 ▶</button>
+      <button class="btn" onclick="resetFlow()" title="단축키: R">↺ 처음으로</button>
+      <button id="btnSpeed" class="btn" onclick="cycleSpeed()">⚡ 1.0x</button>
+      <button id="btnTheme" class="btn" onclick="toggleTheme()" title="라이트/다크 모드">🌙</button>
+      <button id="btnDownload" class="btn btn-download" onclick="downloadSelfHTML()">📥 HTML 다운로드</button>
+    </div>
+  </header>
+
+  <main class="main-stage">
+    <!-- 실시간 자동 내레이션 배너 -->
+    <section class="narration-banner" aria-live="polite">
+      <div class="narration-left">
+        <span id="narrationTag" class="narration-step-tag">STEP 1</span>
+        <div id="narrationText" class="narration-text">화면을 불러오는 중입니다...</div>
+      </div>
+      <div id="narrationProgress" class="narration-progress">1 / 11</div>
+    </section>
+
+    <!-- TAB 1: 전체 화면/기능 구성도 (Site Architecture) -->
+    <div id="tab-arch" class="view-panel active">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div>
+            <h2 class="stage-card-title">🌐 전체 포털 화면 및 메뉴 구성도</h2>
+            <p class="stage-card-desc">클릭하여 각 메뉴의 역할과 주요 기능, 활용 방법을 확인하세요.</p>
+          </div>
+          <span class="badge-blue arch-card-badge">포털 메뉴 구성도</span>
+        </div>
+        <div class="arch-grid" id="archGrid">
+          <!-- JS 동적 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: 1. 코칭 여정 (Coaching Journey 11단계 S라인) -->
+    <div id="tab-journey" class="view-panel">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div>
+            <h2 class="stage-card-title">🧭 1. 코칭 여정 로드맵 (가이드북 5.1 기반 11단계 S라인)</h2>
+            <p class="stage-card-desc">프리 세션 ~ Between 2 ~ 3회기에서 부드럽게 U턴하여 Between 3 ~ Follow-up까지 완벽하게 이어지는 S자 흐름입니다.</p>
+          </div>
+          <span class="badge-purple arch-card-badge">S자 연속 곡선 (S-Curve)</span>
+        </div>
+        <div class="svg-flow-container" id="journeySvgContainer">
+          <!-- JS SVG 동적 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: 2. 코치 업무 절차 (Coach Operational Workflow 7단계 S라인) -->
+    <div id="tab-workflow" class="view-panel">
+      <div class="stage-card">
+        <div class="stage-card-header">
+          <div>
+            <h2 class="stage-card-title">📋 2. 코치 표준 업무 절차 (7-Step SOP S라인)</h2>
+            <p class="stage-card-desc">세션 준비부터 Between 안내까지 진행 후, 우측에서 S라인으로 회전하여 종료 리포트 ~ 진행 확인으로 연결되는 7단계 표준 절차입니다.</p>
+          </div>
+          <span class="badge-green arch-card-badge">S자 순환 절차 (4+3 SOP)</span>
+        </div>
+        <div class="svg-flow-container" id="workflowSvgContainer">
+          <!-- JS SVG 동적 생성 -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 하단 상세 인스펙터 드로어 (공통 상세 해설 & 메타 명세) -->
+    <section class="inspector-drawer">
+      <div>
+        <div class="drawer-title">
+          <span id="detailIcon">📌</span>
+          <span id="detailTitle">단계 상세 안내</span>
+          <span id="detailBadge" class="drawer-badge">권장 기준</span>
+        </div>
+        <p id="detailDesc" class="drawer-desc">단계를 클릭하거나 재생 버튼을 누르면 상세 설명이 표시됩니다.</p>
+        <div class="checklist-wrap" id="detailChecklist">
+          <!-- 체크리스트 항목들 동적 표시 -->
+        </div>
+      </div>
+
+      <div class="meta-panel">
+        <div class="meta-row">
+          <span class="meta-label">메뉴 위치 및 경로</span>
+          <span id="metaRoute" class="meta-value">/dashboard</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">연동 데이터 및 산출물</span>
+          <span id="metaSource" class="meta-value">실시간 구글 스프레드시트 연동</span>
+        </div>
+        <div class="meta-row">
+          <span class="meta-label">핵심 운영 가이드 &amp; 질문</span>
+          <span id="metaRule" class="meta-value">개인정보 보호 및 참여자 중심 기록</span>
+        </div>
+        <a id="metaLink" href="#" target="_blank" class="meta-guide-link">
+          <span>문서 및 화면 바로가기 ↗</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // --- 1. 전체 데이터 세트 ---
+    const ARCH_DATA = [
+      {
+        id: "arch-1",
+        badge: "대시보드",
+        badgeClass: "badge-blue",
+        title: "코칭 현황 대시보드",
+        route: "/dashboard",
+        source: "실시간 구글 스프레드시트 연동",
+        rule: "참여자별 회차 진행률 & 일지 제출 모니터링",
+        desc: "삼코동 전체 코칭 프로그램의 회차별 진행률, 코칭일지 제출 현황, 참여자별 완료율을 한눈에 실시간으로 확인하는 종합 현황판입니다.",
+        items: ["프로그램별 진행 현황 요약 카드", "참여자(피코치)별 회차 이수 상태 표", "새로고침 및 최근 동기화 시각 안내"]
+      },
+      {
+        id: "arch-2",
+        badge: "프로그램 개요",
+        badgeClass: "badge-purple",
+        title: "프로그램 철학 및 로드맵",
+        route: "/program/overview",
+        source: "프로그램 기본 운영 매뉴얼",
+        rule: "운영 권장 기준(5회기+Follow-up) & 여정 안내",
+        desc: "삼코동 코칭의 핵심 철학('코치는 답을 주지 않는다', 'Action은 숙제가 아닌 실험')과 운영 기준, 전체 여정 흐름도를 제공합니다.",
+        items: ["권장 운영 기준 카드 (프리세션, 본세션 5회, 진행 간격 등)", "인터랙티브 코칭 여정 및 코치 업무 절차 안내", "단계별 효과적인 추천 질문집 수록"]
+      },
+      {
+        id: "arch-3",
+        badge: "코칭 모델",
+        badgeClass: "badge-green",
+        title: "3대 트랙 다회기 가이드",
+        route: "/coaching/[type]/[stage]",
+        source: "3대 트랙별 회차별 가이드",
+        rule: "프리세션 + 본세션 5회 + Follow-up",
+        desc: "커리어 코칭, 멘토링 코칭, 라이프 코칭의 회차별 핵심 목표, 대화 4단계 진행 순서, 강력한 질문, SHARE 대화법을 안내합니다.",
+        items: ["과정별·회차별 핵심 발견 목표", "SHARE 프로토콜 기반 안전한 경험 공유", "회기별 산출물 및 추천 성찰 도구 연계"]
+      },
+      {
+        id: "arch-4",
+        badge: "일지 및 소감",
+        badgeClass: "badge-amber",
+        title: "4대 코칭 기록 양식",
+        route: "/records/[form]",
+        source: "온라인 설문 양식 연동",
+        rule: "세션 정보 자동 채움 & 회기 후 24시간 내 작성",
+        desc: "코칭일지, 코칭 완료 보고서, 코치 종료 소감, 피코치 종료 소감 4종 서식을 온라인 양식을 통해 간편하게 작성하고 제출합니다.",
+        items: ["코칭일지: 회기 종료 후 24시간 내 작성", "종료 리포트: 5회기 완료 시 종합 성과 요약", "코치/피코치 종료 소감: 과정 마무리 상호 회고"]
+      },
+      {
+        id: "arch-5",
+        badge: "참조 자료실",
+        badgeClass: "badge-blue",
+        title: "자료실 및 가이드북",
+        route: "/references",
+        source: "구글 드라이브 공유 폴더 연동",
+        rule: "운영 가이드북 전문 & 실시간 파일 열람",
+        desc: "코칭 프로그램 운영 가이드북 전문 열람, 역량모델 해설서, 공유 드라이브 폴더의 실시간 파일 확인 및 자료 등록을 지원합니다.",
+        items: ["운영 가이드북 전문 뷰어 제공", "구글 드라이브 공유 폴더 실시간 파일 목록 확인", "동영상·문서 파일 및 웹 링크 간편 등록"]
+      },
+      {
+        id: "arch-6",
+        badge: "보안 & 도구",
+        badgeClass: "badge-purple",
+        title: "보안 로그인 & 코칭 도구",
+        route: "/login, /tools",
+        source: "안전한 비밀번호 인증 체계",
+        rule: "비인가 접근 차단 & 개인정보 안전 보호",
+        desc: "비밀번호 인증을 통해 참여자의 소중한 코칭 기록을 안전하게 보호하며, 현장에서 바로 활용 가능한 추천 코칭 도구를 제공합니다.",
+        items: ["공용 사이트 비밀번호 간편 인증", "질문 카드, 강점 진단, 가치 카드 등 코칭 툴", "모바일 및 태블릿 화면 최적화 지원"]
+      }
+    ];
+
+    const JOURNEY_DATA = [
+      { id: "j-0", label: "프리 세션", sub: "30~45분", icon: "⌛", route: "/coaching/career/start", outputs: "참여 합의서, 사전성찰지", q: "이 과정에서 무엇을 얻고 싶은가?", desc: "고객과의 첫 만남에서 코칭의 목적과 비밀보장을 합의하고 신뢰 관계를 형성합니다.", chk: ["코칭 철학과 파트너십 설명", "고객의 현재 고민과 기대 확인", "회기 일정 및 비밀보장 합의서 서명"] },
+      { id: "j-1", label: "1회기", sub: "My Story", icon: "🚩", route: "/coaching/career/1", outputs: "My Story, 현재 위치", q: "나는 어떤 경험을 지나왔고 지금 어디에 있는가?", desc: "과거와 현재의 경험을 조망하며 고객이 서 있는 현재 좌표를 명확히 인식합니다.", chk: ["주요 인생 곡선과 분기점 탐색", "현재 상황에서 느껴지는 감정 확인", "1차 탐색 주제 도출"] },
+      { id: "j-2", label: "Between 1", sub: "관찰일지", icon: "🧭", isBetween: true, route: "/records/journal", outputs: "관찰일지", q: "내 감정과 에너지는 무엇을 알려주는가?", desc: "1회기 후 일상에서 감정과 에너지가 변화하는 순간을 숙제가 아닌 관찰로 기록합니다.", chk: ["일상의 에너지를 높이는 순간 기록", "반복되는 생각 패턴 메모", "비난 없는 호기심 유지"] },
+      { id: "j-3", label: "2회기", sub: "핵심 가치", icon: "🚩", route: "/coaching/career/2", outputs: "방향성 문장", q: "나는 무엇을 중요하게 여기고 어떤 힘을 가졌는가?", desc: "내면의 핵심 가치와 이미 보유한 강점 자원을 구체적으로 언어화합니다.", chk: ["타협할 수 없는 상위 3가지 가치 정의", "과거 성공 경험 속 강점 패턴 발견", "자신만의 방향성 문장 도출"] },
+      { id: "j-4", label: "Between 2", sub: "실험 기록", icon: "🧭", isBetween: true, route: "/records/journal", outputs: "실험 기록", q: "내 강점을 실제로 어떻게 써볼 수 있는가?", desc: "발견한 강점을 일상 속에서 작고 가볍게 시도해보는 행동 실험을 진행합니다.", chk: ["작은 강점 발휘 장면 실천", "실천 과정에서의 느낌 관찰", "성공/실패 대신 배움에 집중"] },
+      { id: "j-5", label: "3회기", sub: "미래 비전", icon: "🚩", route: "/coaching/career/3", outputs: "미래 방향 지도", q: "앞으로 더 많이 경험하고 싶은 삶은 무엇인가?", desc: "제약 조건을 벗어나 진정으로 원하는 미래의 모습과 경험을 생생히 그립니다.", chk: ["원하는 미래 상태의 오감 묘사", "장기 목표와 현재의 연결고리 탐색", "비전 로드맵 초안 작성"] },
+      { id: "j-6", label: "Between 3", sub: "행동실험", icon: "🧭", isBetween: true, route: "/records/journal", outputs: "행동실험 기록", q: "그 방향을 확인하기 위해 무엇을 해볼 수 있는가?", desc: "원하는 미래 방향을 검증하기 위한 가설 기반의 탐색 활동을 수행합니다.", chk: ["정보 탐색 또는 롤모델 인터뷰", "새로운 시도에 대한 고객 피드백", "자신에게 주는 격려와 축하"] },
+      { id: "j-7", label: "4회기", sub: "걸림돌 전환", icon: "🚩", route: "/coaching/career/4", outputs: "선택지·조정 계획", q: "무엇이 나를 멈추게 하며 어떤 선택이 가능한가?", desc: "행동을 가로막는 내면의 두려움과 장애물을 사실과 해석으로 분리하여 재정의합니다.", chk: ["사실, 해석, 예상을 객관적으로 분리", "통제 가능한 영역과 불가능한 영역 구분", "새로운 대안과 우회로 선택"] },
+      { id: "j-8", label: "Between 4", sub: "실행 회고", icon: "🧭", isBetween: true, route: "/records/journal", outputs: "실행 회고지", q: "시도한 결과 무엇을 배우고 조정할 것인가?", desc: "조정한 계획을 실제 실행해보고 자기조절 경험을 축적합니다.", chk: ["장애물 직면 시 대처 방식 점검", "스스로에게 유효했던 지지 자원 기록", "5회기 점검 질문 준비"] },
+      { id: "j-9", label: "5회기", sub: "지속 시스템", icon: "🚩", route: "/coaching/career/5", outputs: "자기질문 카드·지속 계획", q: "앞으로 나는 어떻게 스스로를 점검할 것인가?", desc: "코칭 종료 후에도 스스로 질문하고 성찰하며 성장할 수 있는 자립 시스템을 완성합니다.", chk: ["5회기 동안의 변화와 성장 축하", "자기질문 카드 3선 제작", "코칭 완료 보고서 및 종료 소감 안내"] },
+      { id: "j-10", label: "Follow-up", sub: "후속 점검", icon: "🚩", route: "/coaching/career/follow-up", outputs: "후속 성찰 기록", q: "무엇을 유지·수정·새로 선택할 것인가?", desc: "종료 2~4주 후 일상 적용 상태를 확인하고 새로운 의제를 지지합니다.", chk: ["행동 습관의 지속 여부 점검", "새롭게 마주한 도전 과제 논의", "지속적인 성장을 위한 격려"] }
+    ];
+
+    const WORKFLOW_DATA = [
+      { id: "w-0", label: "세션 준비", sub: "사전 점검", icon: "📋", route: "/coaching/career/start", desc: "고객의 사전 성찰지와 이전 회기 일지를 확인하고 회기 목표와 라포 형성 질문을 준비합니다.", chk: ["고객의 사전 성찰 내용 숙지", "오늘의 핵심 대화 질문 설계", "온라인/오프라인 환경 및 시간 점검"] },
+      { id: "w-1", label: "세션 진행", sub: "핵심 대화", icon: "💬", route: "/coaching/career/1", desc: "적극적 경청과 질문을 통해 고객 스스로 통찰을 얻고 구체적인 행동 실험을 선택하도록 돕습니다.", chk: ["의제 합의 및 원하는 결과 확인", "가치와 강점 기반의 깊이 탐색", "숙제가 아닌 작고 가벼운 행동실험 도출"] },
+      { id: "w-2", label: "코칭일지", sub: "24h 내 기록", icon: "✏️", route: "/records/journal", desc: "세션 종료 후 24시간 이내에 구글폼 연동 화면을 통해 핵심 대화 내용과 고객의 발견을 기록합니다.", chk: ["고객의 주요 통찰과 언어 그대로 기록", "합의된 행동 실험 및 관찰 과제 명시", "다음 회기 연결 질문 메모"] },
+      { id: "w-3", label: "Between 안내", sub: "성찰 지지", icon: "🧭", route: "/program/overview", desc: "회기 사이에 고객이 부담 없이 자신의 감정과 행동을 관찰할 수 있도록 가벼운 격려를 전달합니다.", chk: ["평가나 숙제 방식 지양", "호기심을 유지하도록 질문 리마인드", "코치의 개입을 최소화하고 고객 자율성 존중"] },
+      { id: "w-4", label: "종료 리포트", sub: "최종 보고서", icon: "📑", route: "/records/final-report", desc: "5회기 코칭 과정이 모두 완료되면 전체 여정의 성과와 배움을 정리한 최종 보고서를 작성합니다.", chk: ["전체 5회기 목표 달성도 종합", "고객의 정량적·정성적 성장 포인트 요약", "향후 지속 과제 권고사항 기재"] },
+      { id: "w-5", label: "종료소감", sub: "상호 성찰", icon: "✍️", route: "/records/coach-closing", desc: "코치와 피코치가 각자의 관점에서 과정에 대한 소감과 감사, 피드백을 기록하여 유종의 미를 거둡니다.", chk: ["코치 종료소감 작성 (/records/coach-closing)", "피코치 종료소감 링크 전달 (/records/coachee-closing)", "상호 파트너십에 대한 성찰과 격려"] },
+      { id: "w-6", label: "진행 확인", sub: "대시보드", icon: "📊", route: "/dashboard", desc: "대시보드를 통해 일지 제출 현황, 참여자별 이수율, 통계를 실시간으로 확인하고 관리합니다.", chk: ["구글 스프레드시트 동기화 상태 점검", "프로그램별 누적 통계 모니터링", "운영 관리자와의 정보 공유"] }
+    ];
+
+    // --- 2. 상태 관리 변수 ---
+    let currentTab = "tab-arch";
+    let currentStepIndex = 0;
+    let isPlaying = false;
+    let playTimer = null;
+    const SPEED_DELAYS = [4800, 2800, 1800, 1100];
+    let speedIdx = 1; // 1.0x (2800ms)
+
+    // --- 3. 정밀 SVG S-Curve 계산 및 렌더링 엔진 ---
+    const NODE_W = 124;
+    const NODE_H = 50;
+    const GAP_X = 28;
+    const GAP_Y = 56;
+    const PAD_X = 24;
+    const PAD_Y = 24;
+
+    function buildSFlowSVG(dataList, perRow, containerId) {
+      const count = dataList.length;
+      const rows = Math.ceil(count / perRow);
+      const cols = Math.min(perRow, count);
+      const totalW = PAD_X * 2 + cols * NODE_W + (cols - 1) * GAP_X + 50; // 우측 U턴 여백 확보
+      const totalH = PAD_Y * 2 + rows * NODE_H + (rows - 1) * GAP_Y;
+
+      // 1. 노드 위치 계산 (지그재그 S자 좌표)
+      const positions = Array.from({ length: count }, (_, i) => {
+        const row = Math.floor(i / perRow);
+        const col = row % 2 === 0 ? i % perRow : perRow - 1 - (i % perRow);
+        return {
+          x: PAD_X + col * (NODE_W + GAP_X),
+          y: PAD_Y + row * (NODE_H + GAP_Y),
+          row,
+          col
+        };
+      });
+
+      // 2. 연결선 세그먼트 생성 (직선 및 완벽한 S-Curve U턴)
+      const segments = [];
+      const H_HALF = NODE_H / 2;
+
+      for (let i = 0; i < count - 1; i++) {
+        const a = positions[i];
+        const b = positions[i + 1];
+        const isDashed = Boolean(dataList[i].isBetween || dataList[i + 1].isBetween);
+
+        if (a.row === b.row) {
+          // 동일 행 수평 연결
+          if (b.x > a.x) {
+            // 좌 -> 우
+            const x1 = a.x + NODE_W;
+            const y = a.y + H_HALF;
+            const x2 = b.x;
+            segments.push({
+              fromIdx: i,
+              d: `M ${x1} ${y} L ${x2} ${y}`,
+              dashed: isDashed
+            });
+          } else {
+            // 우 -> 좌 (역방향 S라인)
+            const x1 = a.x;
+            const y = a.y + H_HALF;
+            const x2 = b.x + NODE_W;
+            segments.push({
+              fromIdx: i,
+              d: `M ${x1} ${y} L ${x2} ${y}`,
+              dashed: isDashed
+            });
+          }
+        } else {
+          // 행 전환 U턴 곡선 (Between 2 - 3회기 - Between 3 / Between 안내 - 종료 리포트)
+          const y1 = a.y + H_HALF;
+          const y2 = b.y + H_HALF;
+          if (a.x >= b.x) {
+            // 우측에서 아래로 도킹하는 부드러운 베지어 U턴 곡선
+            const x1 = a.x + NODE_W;
+            const x2 = b.x + NODE_W;
+            const cx = Math.max(x1, x2) + 42;
+            segments.push({
+              fromIdx: i,
+              d: `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`,
+              dashed: isDashed,
+              isCurve: true
+            });
+          } else {
+            // 좌측에서 아래로 도킹하는 U턴 곡선
+            const x1 = a.x;
+            const x2 = b.x;
+            const cx = Math.min(x1, x2) - 42;
+            segments.push({
+              fromIdx: i,
+              d: `M ${x1} ${y1} C ${cx} ${y1}, ${cx} ${y2}, ${x2} ${y2}`,
+              dashed: isDashed,
+              isCurve: true
+            });
+          }
+        }
+      }
+
+      // 3. SVG 마크업 렌더링
+      const svgHTML = `
+        <svg viewBox="0 0 ${totalW} ${totalH}" class="svg-flow" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <linearGradient id="clay-capsule-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--surface)" />
+              <stop offset="100%" stop-color="var(--bg)" />
+            </linearGradient>
+            <linearGradient id="clay-between-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--bg)" />
+              <stop offset="100%" stop-color="var(--node-between-bg)" />
+            </linearGradient>
+          </defs>
+
+          <!-- 연결선 그룹 -->
+          <g class="segments-group">
+            ${segments.map((seg) => {
+              const isActive = currentStepIndex > seg.fromIdx;
+              return `
+                <path
+                  d="${seg.d}"
+                  fill="none"
+                  stroke="${isActive ? 'var(--line-active)' : 'var(--line)'}"
+                  stroke-width="${isActive ? '2.5' : '1.8'}"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-dasharray="${seg.dashed ? '5 4' : 'none'}"
+                  opacity="${isActive ? '1' : '0.6'}"
+                  style="transition: all 0.3s ease;"
+                />
+              `;
+            }).join('')}
+          </g>
+
+          <!-- 3D 클레이 캡슐 노드 그룹 -->
+          <g class="nodes-group">
+            ${dataList.map((item, idx) => {
+              const pos = positions[idx];
+              const isBetween = Boolean(item.isBetween);
+              const isActive = idx === currentStepIndex;
+              const radius = 20;
+
+              return `
+                <g class="svg-node-group ${isBetween ? 'is-between' : ''} ${isActive ? 'active' : ''}" 
+                   onclick="selectStep(${idx})" 
+                   id="node-${containerId}-${idx}"
+                   role="button"
+                   tabindex="0"
+                   aria-label="${item.label}">
+                  
+                  <!-- 캡슐 바닥 소프트 그림자 -->
+                  <rect
+                    x="${pos.x + 2}"
+                    y="${pos.y + 4}"
+                    width="${NODE_W}"
+                    height="${NODE_H}"
+                    rx="${radius}"
+                    fill="rgba(15, 23, 42, 0.12)"
+                  />
+
+                  <!-- 캡슐 하단 3D 쿠션 입체면 -->
+                  <rect
+                    x="${pos.x}"
+                    y="${pos.y + 2.5}"
+                    width="${NODE_W}"
+                    height="${NODE_H}"
+                    rx="${radius}"
+                    fill="var(--line)"
+                  />
+
+                  <!-- 캡슐 메인 전면 캡슐 -->
+                  <rect
+                    class="pill-main"
+                    x="${pos.x}"
+                    y="${pos.y}"
+                    width="${NODE_W}"
+                    height="${NODE_H}"
+                    rx="${radius}"
+                    fill="${isBetween ? 'url(#clay-between-grad)' : 'url(#clay-capsule-grad)'}"
+                    stroke="${isBetween ? 'var(--line)' : 'var(--line)'}"
+                    stroke-width="1.5"
+                    stroke-dasharray="${isBetween ? '4 3' : 'none'}"
+                    style="transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);"
+                  />
+
+                  <!-- 아이콘 & 라벨 텍스트 -->
+                  <text
+                    x="${pos.x + NODE_W / 2}"
+                    y="${pos.y + 24}"
+                    text-anchor="middle"
+                    class="node-text-title"
+                    fill="var(--text-main)"
+                    font-size="13"
+                    font-weight="700"
+                    style="pointer-events: none; user-select: none;"
+                  >
+                    ${item.label} ${item.icon ? item.icon : ''}
+                  </text>
+                  <text
+                    x="${pos.x + NODE_W / 2}"
+                    y="${pos.y + 40}"
+                    text-anchor="middle"
+                    fill="var(--text-muted)"
+                    font-size="10.5"
+                    font-weight="500"
+                    style="pointer-events: none; user-select: none;"
+                  >
+                    ${item.sub ? item.sub : ''}
+                  </text>
+                </g>
+              `;
+            }).join('')}
+          </g>
+        </svg>
+      `;
+
+      document.getElementById(containerId).innerHTML = svgHTML;
+    }
+
+    // --- 4. 뷰 렌더링 함수들 ---
+    function renderArchView() {
+      const grid = document.getElementById("archGrid");
+      grid.innerHTML = ARCH_DATA.map((item, idx) => `
+        <div class="arch-card ${idx === currentStepIndex ? 'active' : ''}" id="card-arch-${idx}" onclick="selectStep(${idx})">
+          <span class="arch-card-badge ${item.badgeClass}">${item.badge}</span>
+          <h3 class="arch-card-title">${item.title}</h3>
+          <p class="arch-card-desc">${item.desc}</p>
+          <div class="arch-sub-list">
+            ${item.items.map(sub => `
+              <div class="arch-sub-item">
+                <span class="arch-sub-dot"></span>
+                <span>${sub}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderJourneyView() {
+      // 1. 코칭 여정 11단계: perRow = 6 (상단 6개: 프리세션~3회기 -> 우측 S라인 U턴 -> 하단 5개: Between 3~Follow-up)
+      buildSFlowSVG(JOURNEY_DATA, 6, "journeySvgContainer");
+    }
+
+    function renderWorkflowView() {
+      // 2. 코치 업무 절차 7단계: perRow = 4 (상단 4개: 세션준비~Between안내 -> 우측 S라인 U턴 -> 하단 3개: 종료리포트~진행확인)
+      buildSFlowSVG(WORKFLOW_DATA, 4, "workflowSvgContainer");
+    }
+
+    // --- 5. 상세 인스펙터 및 배너 갱신 ---
+    function updateInspector() {
+      let dataList = currentTab === "tab-arch" ? ARCH_DATA : currentTab === "tab-journey" ? JOURNEY_DATA : WORKFLOW_DATA;
+      if (currentStepIndex >= dataList.length) currentStepIndex = 0;
+      const cur = dataList[currentStepIndex];
+
+      // 배너 갱신
+      document.getElementById("narrationTag").textContent = `STEP ${currentStepIndex + 1}`;
+      document.getElementById("narrationText").textContent = cur.desc || cur.q || cur.title;
+      document.getElementById("narrationProgress").textContent = `${currentStepIndex + 1} / ${dataList.length}`;
+
+      // 인스펙터 갱신
+      document.getElementById("detailIcon").textContent = cur.icon || "📌";
+      document.getElementById("detailTitle").textContent = cur.label || cur.title;
+      document.getElementById("detailBadge").textContent = cur.sub || cur.badge || "표준 기준";
+      document.getElementById("detailDesc").textContent = cur.desc || "상세 프로세스 안내";
+
+      const chkWrap = document.getElementById("detailChecklist");
+      const items = cur.chk || cur.items || [cur.outputs ? `산출물: ${cur.outputs}` : "기본 절차 준수"];
+      chkWrap.innerHTML = items.map(t => `
+        <div class="chk-item">
+          <span class="chk-icon">✓</span>
+          <span>${t}</span>
+        </div>
+      `).join('');
+
+      document.getElementById("metaRoute").textContent = cur.route || "/dashboard";
+      document.getElementById("metaSource").textContent = cur.source || (cur.outputs ? `산출물: ${cur.outputs}` : "Google Workspace");
+      document.getElementById("metaRule").textContent = cur.rule || (cur.q ? `핵심 질문: ${cur.q}` : "표준 운영 지침");
+
+      const linkEl = document.getElementById("metaLink");
+      linkEl.href = cur.route ? cur.route.split(' ')[0] : "#";
+      linkEl.textContent = `${cur.label || cur.title} 화면 열기 ↗`;
+
+      // 뷰별 active 상태 갱신
+      if (currentTab === "tab-arch") {
+        document.querySelectorAll(".arch-card").forEach((el, i) => el.classList.toggle("active", i === currentStepIndex));
+      } else if (currentTab === "tab-journey") {
+        renderJourneyView();
+      } else if (currentTab === "tab-workflow") {
+        renderWorkflowView();
+      }
+    }
+
+    // --- 6. 타이머 및 재생 제어 ---
+    function startTimer() {
+      stopTimer();
+      const delay = SPEED_DELAYS[speedIdx];
+      playTimer = setTimeout(() => {
+        if (isPlaying) {
+          nextStep();
+          startTimer();
+        }
+      }, delay);
+    }
+
+    function stopTimer() {
+      if (playTimer) {
+        clearTimeout(playTimer);
+        playTimer = null;
+      }
+    }
+
+    function togglePlay() {
+      isPlaying = !isPlaying;
+      document.getElementById("playIcon").textContent = isPlaying ? "❚❚" : "▷";
+      document.getElementById("playText").textContent = isPlaying ? "일시정지" : "재생";
+      if (isPlaying) startTimer();
+      else stopTimer();
+    }
+
+    function nextStep() {
+      let len = currentTab === "tab-arch" ? ARCH_DATA.length : currentTab === "tab-journey" ? JOURNEY_DATA.length : WORKFLOW_DATA.length;
+      currentStepIndex = (currentStepIndex + 1) % len;
+      updateInspector();
+    }
+
+    function prevStep() {
+      let len = currentTab === "tab-arch" ? ARCH_DATA.length : currentTab === "tab-journey" ? JOURNEY_DATA.length : WORKFLOW_DATA.length;
+      currentStepIndex = (currentStepIndex - 1 + len) % len;
+      updateInspector();
+    }
+
+    function resetFlow() {
+      currentStepIndex = 0;
+      updateInspector();
+    }
+
+    function selectStep(idx) {
+      currentStepIndex = idx;
+      updateInspector();
+    }
+
+    function cycleSpeed() {
+      speedIdx = (speedIdx + 1) % SPEED_DELAYS.length;
+      const labels = ["⚡ 0.5x", "⚡ 1.0x", "⚡ 1.5x", "⚡ 2.0x"];
+      document.getElementById("btnSpeed").textContent = labels[speedIdx];
+      if (isPlaying) startTimer();
+    }
+
+    function applyTheme(target) {
+      const theme = target === "dark" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", theme);
+      document.body.setAttribute("data-theme", theme);
+      const btn = document.getElementById("btnTheme");
+      if (btn) btn.textContent = theme === "dark" ? "☀️" : "🌙";
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.getAttribute("data-theme") === "dark";
+      const next = isDark ? "light" : "dark";
+      applyTheme(next);
+      try {
+        localStorage.setItem("scd.theme", next);
+      } catch (e) {}
+      try {
+        if (window.parent && window.parent !== window && window.parent.document) {
+          window.parent.document.documentElement.setAttribute("data-theme", next);
+          window.parent.localStorage.setItem("scd.theme", next);
+          window.parent.dispatchEvent(new Event("storage"));
+        }
+      } catch (e) {}
+    }
+
+    function syncThemeWithParent() {
+      let current = "light";
+      try {
+        if (window.parent && window.parent !== window && window.parent.document) {
+          const pt = window.parent.document.documentElement.getAttribute("data-theme");
+          if (pt) current = pt;
+        } else {
+          const st = localStorage.getItem("scd.theme");
+          if (st) current = st;
+        }
+      } catch (e) {
+        try {
+          const st = localStorage.getItem("scd.theme");
+          if (st) current = st;
+        } catch (_) {}
+      }
+      applyTheme(current);
+    }
+
+    function switchTab(tabId) {
+      currentTab = tabId;
+      currentStepIndex = 0;
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.getAttribute("data-tab") === tabId);
+      });
+      document.querySelectorAll(".view-panel").forEach(panel => {
+        panel.classList.toggle("active", panel.id === tabId);
+      });
+      updateInspector();
+    }
+
+    // --- 7. HTML 자체 다운로드 기능 ---
+    function downloadSelfHTML() {
+      const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: "text/html;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "scc_coaching_portal_motion_guide.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // 키보드 단축키 지원
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "Space") { e.preventDefault(); togglePlay(); }
+      else if (e.code === "ArrowRight") { e.preventDefault(); nextStep(); }
+      else if (e.code === "ArrowLeft") { e.preventDefault(); prevStep(); }
+      else if (e.code === "KeyR") { e.preventDefault(); resetFlow(); }
+    });
+
+    // 초기화 및 테마 실시간 동기화
+    syncThemeWithParent();
+    window.addEventListener("storage", (e) => {
+      if (!e.key || e.key === "scd.theme") syncThemeWithParent();
+    });
+    window.addEventListener("message", (e) => {
+      if (e.data && (e.data.type === "scd:set-theme" || e.data.type === "SET_THEME")) {
+        applyTheme(e.data.theme);
+      }
+    });
+    try {
+      if (window.parent && window.parent !== window && window.parent.document) {
+        const parentObserver = new MutationObserver(() => {
+          const pt = window.parent.document.documentElement.getAttribute("data-theme");
+          if (pt) applyTheme(pt);
+        });
+        parentObserver.observe(window.parent.document.documentElement, {
+          attributes: true,
+          attributeFilter: ["data-theme"]
+        });
+      }
+    } catch (e) {}
+
+    renderArchView();
+    renderJourneyView();
+    renderWorkflowView();
+    updateInspector();
+  </script>
+</body>
+</html>
